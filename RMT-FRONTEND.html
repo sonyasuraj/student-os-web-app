@@ -1,14 +1,18 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Rate My Teachers</title>
+    <title>Rate My Teacher</title>
 
     <style>
-        /* ---------- GENERAL ---------- */
+
+        /* =========================
+           BASIC PAGE
+        ========================= */
 
         * {
             box-sizing: border-box;
@@ -18,19 +22,25 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f7fb;
+            background: #f4f6fb;
             color: #222;
         }
 
-        /* ---------- NAVBAR ---------- */
+
+        /* =========================
+           NAVBAR
+        ========================= */
 
         nav {
-            background-color: #ffffff;
-            padding: 18px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            height: 70px;
+            background: white;
             border-bottom: 1px solid #ddd;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
         }
 
         .logo {
@@ -44,8 +54,8 @@
 
         nav a {
             text-decoration: none;
-            color: #333;
-            margin-left: 25px;
+            color: #444;
+            margin-left: 30px;
             font-size: 15px;
         }
 
@@ -53,37 +63,40 @@
             color: #4f46e5;
         }
 
-        /* ---------- HERO SECTION ---------- */
+
+        /* =========================
+           HERO / SEARCH
+           ========================= */
 
         .hero {
             text-align: center;
-            padding: 80px 20px 60px;
+            padding: 55px 20px 45px;
         }
 
         .hero h1 {
-            font-size: 45px;
-            margin-bottom: 15px;
+            font-size: 42px;
+            margin-bottom: 12px;
         }
 
         .hero p {
             color: #666;
-            font-size: 18px;
-            margin-bottom: 30px;
+            font-size: 17px;
+            margin-bottom: 28px;
         }
-
-        /* ---------- SEARCH ---------- */
 
         .search-container {
             display: flex;
             justify-content: center;
+            align-items: center;
         }
 
         .search-box {
-            width: 500px;
-            max-width: 90%;
-            padding: 16px 20px;
+            width: 480px;
+            padding: 15px 18px;
+
             border: 1px solid #ccc;
             border-radius: 10px;
+
             font-size: 16px;
             outline: none;
         }
@@ -94,158 +107,305 @@
 
         .search-button {
             margin-left: 10px;
-            padding: 16px 25px;
+            padding: 15px 24px;
+
             border: none;
             border-radius: 10px;
-            background-color: #4f46e5;
+
+            background: #4f46e5;
             color: white;
+
             font-size: 16px;
+            font-weight: bold;
+
             cursor: pointer;
         }
 
         .search-button:hover {
-            background-color: #3730a3;
+            background: #3730a3;
         }
 
-        /* ---------- TEACHERS ---------- */
+
+        /* =========================
+           TEACHER SECTION
+           ========================= */
 
         .teachers {
-            padding: 40px 50px 80px;
-            max-width: 1100px;
-            margin: auto;
+            max-width: 1150px;
+            margin: 0 auto;
+
+            padding: 20px 30px 70px;
         }
 
         .teachers h2 {
+            font-size: 27px;
             margin-bottom: 25px;
-            font-size: 28px;
         }
+
+
+        /* =========================
+           TEACHER GRID
+           ========================= */
 
         .teacher-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            gap: 22px;
         }
 
+
+        /* =========================
+           TEACHER CARD
+           ========================= */
+
         .teacher-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #e1e1e1;
-            transition: transform 0.2s;
+            background: white;
+
+            border: 1px solid #ddd;
+            border-radius: 14px;
+
+            padding: 24px;
+
+            min-height: 245px;
+
+            display: flex;
+            flex-direction: column;
+
+            transition: 0.2s ease;
         }
 
         .teacher-card:hover {
             transform: translateY(-4px);
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
 
+
+        /* TEACHER NAME */
+
         .teacher-card h3 {
+            font-size: 21px;
             margin-bottom: 8px;
         }
 
-        .subject {
-            color: #666;
-            margin-bottom: 15px;
+
+        /* TEAM + GRADE */
+
+        .team-grade {
+            color: #777;
+
+            font-size: 13px;
+            font-weight: bold;
+
+            margin-bottom: 12px;
+
+            text-transform: uppercase;
         }
 
+
+        /* SUBJECT */
+
+        .subject {
+            color: #555;
+
+            font-size: 15px;
+
+            line-height: 1.4;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* RATING */
+
         .rating {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 14px;
+
+            margin-top: auto;
+            margin-bottom: 18px;
         }
 
         .stars {
-            color: #f59e0b;
-        }
-
-        .view-button {
             display: block;
-            margin-top: 18px;
-            text-align: center;
-            padding: 10px;
-            background-color: #eef2ff;
-            color: #4f46e5;
-            text-decoration: none;
-            border-radius: 8px;
+
+            font-size: 19px;
+
+            margin-bottom: 5px;
+
+            letter-spacing: 2px;
         }
 
-        .view-button:hover {
-            background-color: #e0e7ff;
-        }
-
-        /* ---------- FOOTER ---------- */
-
-        footer {
-            text-align: center;
-            padding: 25px;
-            background-color: white;
-            border-top: 1px solid #ddd;
+        .rating-text {
             color: #777;
         }
 
-        /* ---------- MOBILE ---------- */
 
-        @media (max-width: 800px) {
+        /* VIEW REVIEWS */
+
+        .view-button {
+            display: block;
+
+            text-align: center;
+
+            padding: 11px;
+
+            background: #eef2ff;
+            color: #4f46e5;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .view-button:hover {
+            background: #e0e7ff;
+        }
+
+
+        /* =========================
+           NO RESULTS
+           ========================= */
+
+        #no-results {
+            display: none;
+
+            text-align: center;
+
+            color: #777;
+
+            margin-top: 30px;
+        }
+
+
+        /* =========================
+           FOOTER
+           ========================= */
+
+        footer {
+            background: white;
+
+            border-top: 1px solid #ddd;
+
+            text-align: center;
+
+            padding: 25px;
+
+            color: #777;
+        }
+
+
+        /* =========================
+           TABLET
+           ========================= */
+
+        @media (max-width: 900px) {
+
             .teacher-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
+        }
+
+
+        /* =========================
+           PHONE
+           ========================= */
+
+        @media (max-width: 600px) {
+
             nav {
-                padding: 18px 20px;
+                padding: 0 20px;
+            }
+
+            nav a {
+                margin-left: 12px;
             }
 
             .hero h1 {
-                font-size: 35px;
+                font-size: 32px;
             }
 
             .search-container {
                 flex-direction: column;
-                align-items: center;
+            }
+
+            .search-box {
+                width: 90%;
             }
 
             .search-button {
+                width: 90%;
                 margin-left: 0;
                 margin-top: 10px;
-                width: 90%;
             }
+
+            .teachers {
+                padding: 20px;
+            }
+
+            .teacher-grid {
+                grid-template-columns: 1fr;
+            }
+
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- NAVIGATION BAR -->
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
 
     <nav>
+
         <div class="logo">
             Rate<span>MyTeacher</span>
         </div>
 
         <div>
-            <a href="index.html">Home</a>
+            <a href="#">Home</a>
             <a href="#">Teachers</a>
             <a href="#">About</a>
         </div>
+
     </nav>
 
 
-    <!-- MAIN HERO SECTION -->
+
+    <!-- =========================
+         HERO
+    ========================= -->
 
     <section class="hero">
 
         <h1>Find Your Teachers</h1>
 
         <p>
-            See what other students think about their teachers.
+            See what students think about their teachers.
         </p>
 
         <div class="search-container">
 
             <input
                 type="text"
+                id="searchInput"
                 class="search-box"
                 placeholder="Search for a teacher..."
             >
 
-            <button class="search-button">
+            <button
+                id="searchButton"
+                class="search-button"
+            >
                 Search
             </button>
 
@@ -254,28 +414,46 @@
     </section>
 
 
-    <!-- TEACHER SECTION -->
+
+    <!-- =========================
+         TEACHERS
+    ========================= -->
 
     <section class="teachers">
 
-        <h2>Popular Teachers</h2>
+        <h2>Teachers in Rio</h2>
 
-        <div class="teacher-grid">
+        <div
+            class="teacher-grid"
+            id="teacherGrid"
+        >
 
-            <!-- Teacher 1 -->
+
+            <!-- KRATOFIL -->
 
             <div class="teacher-card">
 
                 <h3>Kratofil</h3>
 
+                <p class="team-grade">
+                    TAMBO • GRADE 7
+                </p>
+
                 <p class="subject">
                     World History and Geography 7
                 </p>
 
-                <p class="rating">
-                    <span class="stars">★★★★★</span>
-                    Unknown at the moment.
-                </p>
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
 
                 <a href="#" class="view-button">
                     View Reviews
@@ -284,20 +462,100 @@
             </div>
 
 
-            <!-- Teacher 2 -->
+
+            <!-- SCHANTZ -->
+
+            <div class="teacher-card">
+
+                <h3>Schantz</h3>
+
+                <p class="team-grade">
+                    TAMBO • GRADE 7
+                </p>
+
+                <p class="subject">
+                    English 7
+                </p>
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
+
+                <a href="#" class="view-button">
+                    View Reviews
+                </a>
+
+            </div>
+
+
+
+            <!-- SHAW -->
+
+            <div class="teacher-card">
+
+                <h3>Shaw</h3>
+
+                <p class="team-grade">
+                    TAMBO • GRADE 7
+                </p>
+
+                <p class="subject">
+                    Math 7 and AM7
+                </p>
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
+
+                <a href="#" class="view-button">
+                    View Reviews
+                </a>
+
+            </div>
+
+
+
+            <!-- SCIENCE JAMES -->
 
             <div class="teacher-card">
 
                 <h3>Science James</h3>
 
+                <p class="team-grade">
+                    TAMBO • GRADE 7
+                </p>
+
                 <p class="subject">
                     Science 7
                 </p>
 
-                <p class="rating">
-                    <span class="stars">★★★★☆</span>
-                    Unknown at the moment.
-                </p>
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
 
                 <a href="#" class="view-button">
                     View Reviews
@@ -306,20 +564,134 @@
             </div>
 
 
-            <!-- Teacher 3 -->
+
+            <!-- VANDYKE -->
 
             <div class="teacher-card">
 
                 <h3>VanDyke</h3>
 
-                <p class="subject">
-                    Science 7 and AM7
+                <p class="team-grade">
+                    TAMBO • GRADE 7
                 </p>
 
-                <p class="rating">
-                    <span class="stars">★★★★☆</span>
-                    Unknown at the moment.
+                <p class="subject">
+                    AM7, Science 7
                 </p>
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
+
+                <a href="#" class="view-button">
+                    View Reviews
+                </a>
+
+            </div>
+
+
+
+            <!-- MALCOLM -->
+
+            <div class="teacher-card">
+
+                <h3>Malcolm</h3>
+
+                <p class="team-grade">
+                    YELLOWSTONE • GRADE 7
+                </p>
+
+                <p class="subject">
+                    Science 7
+                </p>
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
+
+                <a href="#" class="view-button">
+                    View Reviews
+                </a>
+
+            </div>
+
+
+
+            <!-- CABRERA -->
+
+            <div class="teacher-card">
+
+                <h3>Cabrera</h3>
+
+                <p class="team-grade">
+                    YELLOWSTONE • GRADE 7
+                </p>
+
+                <p class="subject">
+                    English 7
+                </p>
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
+
+                <a href="#" class="view-button">
+                    View Reviews
+                </a>
+
+            </div>
+
+
+
+            <!-- SCHNEIDER -->
+
+            <div class="teacher-card">
+
+                <h3>Schneider</h3>
+
+                <p class="team-grade">
+                    YELLOWSTONE • GRADE 7
+                </p>
+
+                <p class="subject">
+                    English 7
+                </p>
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ⭐⭐⭐⭐⭐
+                    </span>
+
+                    <span class="rating-text">
+                        No ratings yet
+                    </span>
+
+                </div>
 
                 <a href="#" class="view-button">
                     View Reviews
@@ -329,10 +701,18 @@
 
         </div>
 
+
+        <p id="no-results">
+            No teachers found.
+        </p>
+
     </section>
 
 
-    <!-- FOOTER -->
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
     <footer>
 
@@ -342,6 +722,113 @@
 
     </footer>
 
+
+
+    <!-- =========================
+         SEARCH JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const searchButton =
+            document.getElementById("searchButton");
+
+        const teacherCards =
+            document.querySelectorAll(".teacher-card");
+
+        const noResults =
+            document.getElementById("no-results");
+
+
+        function searchTeachers() {
+
+            const searchText =
+                searchInput.value
+                .toLowerCase()
+                .trim();
+
+            let foundTeacher = false;
+
+
+            teacherCards.forEach(function(card) {
+
+                const name =
+                    card.querySelector("h3")
+                    .textContent
+                    .toLowerCase();
+
+                const subject =
+                    card.querySelector(".subject")
+                    .textContent
+                    .toLowerCase();
+
+                const team =
+                    card.querySelector(".team-grade")
+                    .textContent
+                    .toLowerCase();
+
+
+                if (
+                    name.includes(searchText) ||
+                    subject.includes(searchText) ||
+                    team.includes(searchText)
+                ) {
+
+                    card.style.display = "flex";
+
+                    foundTeacher = true;
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+
+            if (foundTeacher) {
+
+                noResults.style.display = "none";
+
+            } else {
+
+                noResults.style.display = "block";
+
+            }
+
+        }
+
+
+        searchButton.addEventListener(
+            "click",
+            searchTeachers
+        );
+
+
+        searchInput.addEventListener(
+            "input",
+            searchTeachers
+        );
+
+
+        searchInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+                    searchTeachers();
+                }
+
+            }
+        );
+
+    </script>
+
+
 </body>
+
 </html>
-```
