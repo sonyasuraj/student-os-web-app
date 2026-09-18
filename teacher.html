@@ -1,0 +1,973 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Teacher Reviews</title>
+
+
+    <style>
+
+        /* =========================
+           GENERAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            background: #f4f6fb;
+
+            color: #222;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+
+            height: 70px;
+
+            background: white;
+
+            border-bottom: 1px solid #ddd;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 50px;
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            font-weight: bold;
+        }
+
+
+        .logo span {
+
+            color: #4f46e5;
+        }
+
+
+        nav a {
+
+            text-decoration: none;
+
+            color: #444;
+
+            margin-left: 30px;
+
+            font-size: 15px;
+        }
+
+
+        nav a:hover {
+
+            color: #4f46e5;
+        }
+
+
+        /* =========================
+           MAIN PAGE
+        ========================= */
+
+        .page {
+
+            max-width: 1000px;
+
+            margin: 0 auto;
+
+            padding: 35px 25px 70px;
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-button {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            color: #4f46e5;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+        }
+
+
+        .back-button:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           TEACHER HEADER
+        ========================= */
+
+        .teacher-header {
+
+            background: white;
+
+            border: 1px solid #ddd;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .teacher-info h1 {
+
+            font-size: 34px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .team-grade {
+
+            color: #777;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+
+        .subject {
+
+            color: #555;
+
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           OVERALL RATING
+        ========================= */
+
+        .overall-rating {
+
+            text-align: center;
+
+            min-width: 180px;
+        }
+
+
+        .rating-number {
+
+            font-size: 42px;
+
+            font-weight: bold;
+        }
+
+
+        .big-stars {
+
+            font-size: 22px;
+
+            margin: 5px 0;
+        }
+
+
+        .review-count {
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            border: 1px solid #ddd;
+
+            border-radius: 14px;
+
+            padding: 22px;
+        }
+
+
+        .stat-card h3 {
+
+            font-size: 15px;
+
+            color: #666;
+
+            margin-bottom: 10px;
+        }
+
+
+        .stat-rating {
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section {
+
+            background: white;
+
+            border: 1px solid #ddd;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .section h2 {
+
+            font-size: 21px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           TAGS
+        ========================= */
+
+        .tags {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+        }
+
+
+        .tag {
+
+            background: #eef2ff;
+
+            color: #4f46e5;
+
+            padding: 9px 14px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           REVIEWS HEADER
+        ========================= */
+
+        .reviews-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .reviews-header h2 {
+
+            margin-bottom: 0;
+        }
+
+
+        .write-review {
+
+            background: #4f46e5;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 11px 16px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .write-review:hover {
+
+            background: #3730a3;
+        }
+
+
+        /* =========================
+           REVIEW
+        ========================= */
+
+        .review {
+
+            border-top: 1px solid #e5e5e5;
+
+            padding: 20px 0;
+        }
+
+
+        .review:first-of-type {
+
+            border-top: none;
+
+            padding-top: 0;
+        }
+
+
+        .review-rating {
+
+            font-size: 18px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .review-date {
+
+            color: #888;
+
+            font-size: 13px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .review-text {
+
+            color: #444;
+
+            line-height: 1.6;
+
+            font-size: 15px;
+        }
+
+
+        .anonymous {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-top: 12px;
+        }
+
+
+        /* =========================
+           REPORT BUTTON
+        ========================= */
+
+        .report-button {
+
+            border: none;
+
+            background: none;
+
+            color: #888;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+        }
+
+
+        .report-button:hover {
+
+            color: #d00;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+
+                padding: 0 20px;
+            }
+
+
+            nav a {
+
+                margin-left: 12px;
+            }
+
+
+            .teacher-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 25px;
+            }
+
+
+            .overall-rating {
+
+                text-align: left;
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .reviews-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav>
+
+        <div class="logo">
+            Rate<span>MyTeacher</span>
+        </div>
+
+        <div>
+
+            <a href="RMT-FRONTEND.html">
+                Home
+            </a>
+
+            <a href="RMT-FRONTEND.html">
+                Teachers
+            </a>
+
+            <a href="#">
+                About
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="page">
+
+
+        <!-- BACK -->
+
+        <a
+            href="RMT-FRONTEND.html"
+            class="back-button"
+        >
+            ← Back to Teachers
+        </a>
+
+
+
+        <!-- =========================
+             TEACHER INFORMATION
+        ========================= -->
+
+        <section class="teacher-header">
+
+
+            <div class="teacher-info">
+
+                <h1 id="teacherName">
+                    Select a teacher
+                </h1>
+
+                <p
+                    class="team-grade"
+                    id="teacherTeam"
+                >
+                    TAMBO • GRADE 7
+                </p>
+
+                <p
+                    class="subject"
+                    id="teacherSubject"
+                >
+                    Choose a teacher from the teacher list
+                </p>
+
+            </div>
+
+
+            <div class="overall-rating">
+
+                <div class="rating-number">
+                    —
+                </div>
+
+                <div class="big-stars">
+                    ⭐⭐⭐⭐⭐
+                </div>
+
+                <p class="review-count">
+                    No reviews yet
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             STATS
+        ========================= -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Difficulty
+                </h3>
+
+                <p class="stat-rating">
+                    —
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Helpfulness
+                </h3>
+
+                <p class="stat-rating">
+                    —
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             TAGS
+        ========================= -->
+
+        <section class="section">
+
+            <h2>
+                Student Tags
+            </h2>
+
+
+            <div class="tags">
+
+                <span class="tag">
+                    No tags yet
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             REVIEWS
+        ========================= -->
+
+        <section class="section">
+
+
+            <div class="reviews-header">
+
+                <h2>
+                    Student Reviews
+                </h2>
+
+                <a
+                    href="#"
+                    class="write-review"
+                >
+                    Rate This Teacher
+                </a>
+
+            </div>
+
+
+
+            <!-- PLACEHOLDER REVIEW -->
+
+            <div class="review">
+
+                <div class="review-rating">
+                    ⭐⭐⭐⭐⭐
+                </div>
+
+                <p class="review-date">
+                    Example review
+                </p>
+
+                <p class="review-text">
+                    Reviews will appear here once students
+                    have submitted them.
+                </p>
+
+                <p class="anonymous">
+                    Anonymous Student
+                </p>
+
+                <button class="report-button">
+                    Report this review
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <p>
+            © 2026 RateMyTeacher
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================
+         TEACHER DATA
+    ========================= -->
+
+    <script>
+
+        const teachers = {
+
+            Bangasser: {
+                name: "Christopher Bangasser",
+                team: "GRADE 8",
+                subject: "English"
+            },
+
+            Cabrera: {
+                name: "Tiffany Cabrera",
+                team: "YELLOWSTONE • GRADE 7",
+                subject: "English"
+            },
+
+            Eledavis: {
+                name: "Elena Davis",
+                team: "GRADE 8",
+                subject: "English"
+            },
+
+            Schneider: {
+                name: "Julie Schneider",
+                team: "YELLOWSTONE • GRADE 7",
+                subject: "English"
+            },
+
+            Sifferman: {
+                name: "Kristen Sifferman",
+                team: "GRADE 8",
+                subject: "English"
+            },
+
+            Simmons: {
+                name: "Lisa Simmons",
+                team: "TAMBO • GRADE 7",
+                subject: "English"
+            },
+
+            Smith: {
+                name: "Athanasia Smith",
+                team: "GRADE 8",
+                subject: "English and History"
+            },
+
+            Choi: {
+                name: "Karen Choi",
+                team: "GRADE 8",
+                subject: "Mathematics"
+            },
+
+            Day: {
+                name: "Lesley Day",
+                team: "GRADE 7",
+                subject: "Mathematics"
+            },
+
+            Fajardo: {
+                name: "Anna Fajardo",
+                team: "GRADE 8",
+                subject: "Mathematics"
+            },
+
+            Grandbois: {
+                name: "Kim Grandbois",
+                team: "GRADE 8",
+                subject: "Math and AM7"
+            },
+
+            Groller: {
+                name: "Laura Groller",
+                team: "GRADE 7",
+                subject: "Math"
+            },
+
+            Joyce: {
+                name: "Kim Joyce",
+                team: "GRADE 8",
+                subject: "Math, Spanish Teacher, and Department Chair"
+            },
+
+            Mandel: {
+                name: "Mitzi Mandel",
+                team: "GRADE 8",
+                subject: "Math 8"
+            },
+
+            Rippe: {
+                name: "Alicia Rippe",
+                team: "GRADE 8",
+                subject: "Math 8"
+            },
+
+            Shaw: {
+                name: "Kirsten Shaw",
+                team: "TAMBO • GRADE 7",
+                subject: "Math 7 and AM7"
+            },
+
+            VanDyke: {
+                name: "Lisa Van Dyke",
+                team: "GRADE 7",
+                subject: "AM7 and Science"
+            },
+
+            JanelleBurkholder: {
+                name: "Janelle Burkholder",
+                team: "HISTORY",
+                subject: "History Teacher"
+            },
+
+            SkylarHogan: {
+                name: "Skylar Hogan",
+                team: "HISTORY",
+                subject: "History Teacher"
+            },
+
+            RonIppolito: {
+                name: "Ron Ippolito",
+                team: "HISTORY",
+                subject: "History Teacher, Rio TV Advisor"
+            },
+
+            BradleyKnutsen: {
+                name: "Bradley Knutsen",
+                team: "HISTORY",
+                subject: "History Teacher, Department Chair, ASB Director"
+            },
+
+            JeanetteKratofil: {
+                name: "Jeanette Kratofil",
+                team: "HISTORY",
+                subject: "History Teacher"
+            },
+
+            JerryMalkowski: {
+                name: "Jerry Malkowski",
+                team: "HISTORY",
+                subject: "History Teacher"
+            },
+
+            JenniferPulaski: {
+                name: "Jennifer Pulaski",
+                team: "HISTORY",
+                subject: "History Teacher"
+            },
+
+            MatthewSheridan: {
+                name: "Matthew Sheridan",
+                team: "HISTORY",
+                subject: "History Teacher"
+            },
+
+            ShalenBurwellCasini: {
+                name: "Shalen Burwell (Casini)",
+                team: "SPECIAL EDUCATION",
+                subject: "Special Education Teacher"
+            },
+
+            HeatherCruz: {
+                name: "Heather Cruz",
+                team: "SPECIAL EDUCATION",
+                subject: "Special Education Teacher"
+            },
+
+            AshaKakonde: {
+                name: "Asha Kakonde",
+                team: "SPECIAL EDUCATION",
+                subject: "Special Education Teacher"
+            }
+
+        };
+
+
+        /* =========================
+           GET TEACHER FROM URL
+        ========================= */
+
+        const parameters =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const teacherID =
+            parameters.get("teacher");
+
+
+        const teacher =
+            teachers[teacherID];
+
+
+        /* =========================
+           DISPLAY TEACHER
+        ========================= */
+
+        if (teacher) {
+
+            document.getElementById(
+                "teacherName"
+            ).textContent = teacher.name;
+
+
+            document.getElementById(
+                "teacherTeam"
+            ).textContent = teacher.team;
+
+
+            document.getElementById(
+                "teacherSubject"
+            ).textContent = teacher.subject;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
