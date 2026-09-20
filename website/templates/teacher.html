@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ teacher.first_name }} {{ teacher.last_name }} — Reviews</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="btn btn-outline">⬅ Back to Teachers</a>
+      <a href="/" class="logo">🏫 Rate My Teacher</a>
+      <a href="/add-teacher" class="btn btn-accent">+ Add Teacher</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Teacher Hero Profile Card -->
+    <section class="profile-hero-card">
+      <div class="profile-details">
+        <h1>👨‍🏫 {{ teacher.first_name }} {{ teacher.last_name }}</h1>
+        <p class="school-name">🏫 {{ teacher.school_name }} • {{ teacher.school_city }}, {{ teacher.school_state }}</p>
+        <div class="badges">
+          <span class="badge badge-dept">Subject: {{ teacher.department }}</span>
+          <span class="badge badge-grade">Grades: {{ teacher.grade_level }}</span>
+        </div>
+        {% if teacher.bio %}
+          <p class="bio-text">"{{ teacher.bio }}"</p>
+        {% endif %}
+      </div>
+
+      <div class="profile-score-card">
+        <div class="score-overall">
+          <span class="score-number">{{ teacher.avg_overall }}</span>
+          <span class="score-max">/ 5.0</span>
+        </div>
+        <p class="score-subtext">Based on {{ teacher.total_reviews }} student reviews</p>
+        <div class="metric-row">
+          <span>📊 Difficulty:</span>
+          <strong>{{ teacher.avg_difficulty }} / 5.0</strong>
+        </div>
+        <div class="metric-row">
+          <span>🤝 Helpfulness:</span>
+          <strong>{{ teacher.avg_helpfulness }} / 5.0</strong>
+        </div>
+        <a href="#write-review" class="btn btn-primary btn-block">✍️ Write a Review</a>
+      </div>
+    </section>
+
+    <!-- Reviews Feed Header -->
+    <section class="reviews-section">
+      <div class="section-header">
+        <h2>Student Reviews ({{ reviews|length }})</h2>
+        <a href="#write-review" class="btn btn-outline">✍️ Leave Feedback</a>
+      </div>
+
+      {% if has_reviews %}
+        <div class="review-feed">
+          {% for rev in reviews %}
+            <article class="review-card">
+              <div class="review-card-header">
+                <div class="review-stars">
+                  <span class="star-rating-display">
+                    {% for i in range(rev.rating_overall) %}⭐{% endfor %}
+                  </span>
+                  <span class="rating-scores">
+                    (Difficulty: {{ rev.rating_difficulty }}/5 • Helpfulness: {{ rev.rating_helpfulness }}/5)
+                  </span>
+                </div>
+                <div class="review-meta">
+                  {% if rev.course_name %}
+                    <span class="badge badge-course">Class: {{ rev.course_name }}</span>
+                  {% endif %}
+                  <span class="reviewer-role-tag">
+                    {{ rev.reviewer_role|capitalize }}
+                    {% if rev.student_grade_level %}• Grade {{ rev.student_grade_level }}{% endif %}
+                  </span>
+                </div>
+              </div>
+
+              <p class="review-body">{{ rev.review_text }}</p>
+
+              {% if rev.tags %}
+                <div class="review-tags-list">
+                  {% for t in rev.tags %}
+                    <span class="tag-badge">🏷️ {{ t.tag_name }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <div class="review-footer">
+                <button class="btn btn-sm btn-vote" data-review-id="{{ rev.review_id }}" data-vote-val="1">
+                  👍 Helpful (<span class="vote-count">{{ rev.upvotes }}</span>)
+                </button>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <!-- Empty State When No Reviews Exist -->
+        <div class="empty-state-card">
+          <div class="empty-icon">🌟</div>
+          <h3>No Reviews Yet!</h3>
+          <p>Be the very first student or parent to share helpful tips and feedback for {{ teacher.first_name }} {{ teacher.last_name }}!</p>
+          <a href="#write-review" class="btn btn-primary">✍️ Write First Review</a>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- Review Submission Form -->
+    <section id="write-review" class="form-card">
+      <div class="form-header">
+        <h2>✍️ Leave an Anonymous Review</h2>
+        <p>🔒 100% Anonymous. No email, username, or login required.</p>
+      </div>
+
+      <div id="alert-container"></div>
+
+      <form id="review-form" data-teacher-id="{{ teacher.teacher_id }}">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="course_name">Course / Subject Name (Optional):</label>
+            <input type="text" id="course_name" placeholder="e.g. Algebra 1, Biology, Honors English">
+          </div>
+          <div class="form-group">
+            <label for="student_grade_level">Your Grade Level (Optional):</label>
+            <select id="student_grade_level">
+              <option value="">Select Grade</option>
+              <option value="6">6th Grade</option>
+              <option value="7">7th Grade</option>
+              <option value="8">8th Grade</option>
+              <option value="9">9th Grade</option>
+              <option value="10">10th Grade</option>
+              <option value="11">11th Grade</option>
+              <option value="12">12th Grade</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Your Role:</label>
+          <div class="radio-options">
+            <label><input type="radio" name="reviewer_role" value="student" checked> Student</label>
+            <label><input type="radio" name="reviewer_role" value="parent"> Parent</label>
+            <label><input type="radio" name="reviewer_role" value="alumni"> Alumni</label>
+          </div>
+        </div>
+
+        <!-- Star Rating Selectors -->
+        <div class="ratings-inputs-grid">
+          <div class="rating-input-box">
+            <label>⭐ Overall Rating (1–5):</label>
+            <div class="star-rating" data-input-target="rating_overall">
+              <span class="star" data-value="1">☆</span>
+              <span class="star" data-value="2">☆</span>
+              <span class="star" data-value="3">☆</span>
+              <span class="star" data-value="4">☆</span>
+              <span class="star" data-value="5">☆</span>
+              <input type="hidden" id="rating_overall" value="0">
+            </div>
+          </div>
+
+          <div class="rating-input-box">
+            <label>📊 Difficulty (1 Easy – 5 Hard):</label>
+            <div class="star-rating" data-input-target="rating_difficulty">
+              <span class="star" data-value="1">☆</span>
+              <span class="star" data-value="2">☆</span>
+              <span class="star" data-value="3">☆</span>
+              <span class="star" data-value="4">☆</span>
+              <span class="star" data-value="5">☆</span>
+              <input type="hidden" id="rating_difficulty" value="0">
+            </div>
+          </div>
+
+          <div class="rating-input-box">
+            <label>🤝 Helpfulness (1 Low – 5 High):</label>
+            <div class="star-rating" data-input-target="rating_helpfulness">
+              <span class="star" data-value="1">☆</span>
+              <span class="star" data-value="2">☆</span>
+              <span class="star" data-value="3">☆</span>
+              <span class="star" data-value="4">☆</span>
+              <span class="star" data-value="5">☆</span>
+              <input type="hidden" id="rating_helpfulness" value="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tag Chips -->
+        {% if tags %}
+          <div class="form-group">
+            <label>Choose Helpful Tags (Click to select):</label>
+            <div class="tags-container">
+              {% for tag in tags %}
+                <div class="tag-chip" data-tag-id="{{ tag.tag_id }}">
+                  🏷️ {{ tag.tag_name }}
+                  <input type="checkbox" style="display:none;" value="{{ tag.tag_id }}">
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Comments Textarea -->
+        <div class="form-group">
+          <label for="review_text">Review Comments (Constructive & Honest):</label>
+          <textarea 
+            id="review_text" 
+            rows="4" 
+            placeholder="What should students know about this teacher's teaching style, tests, and homework?"
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large">🚀 Submit Review</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Rate My Teacher • Congressional App Challenge • 100% Anonymous & COPPA Compliant</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>

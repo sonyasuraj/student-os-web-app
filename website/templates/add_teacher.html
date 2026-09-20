@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate My Teacher — Add Teacher Profile</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="btn btn-outline">⬅ Back to Teachers</a>
+      <a href="/" class="logo">🏫 Rate My Teacher</a>
+      <div></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="form-card add-teacher-card">
+      <div class="form-header">
+        <h1>➕ Submit a New Teacher Profile</h1>
+        <p>Help classmates find teachers and share constructive feedback!</p>
+      </div>
+
+      <div id="alert-container"></div>
+
+      <form id="add-teacher-form">
+        <!-- School Selector -->
+        <div class="form-group">
+          <label for="school_id">Select School: *</label>
+          <select id="school_id" required>
+            <option value="">-- Choose a School --</option>
+            {% for school in schools %}
+              <option value="{{ school.school_id }}">
+                {{ school.name }} ({{ school.city }}, {{ school.state }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Name Inputs -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_name">Teacher First Name: *</label>
+            <input type="text" id="first_name" placeholder="e.g. Sarah" required>
+          </div>
+          <div class="form-group">
+            <label for="last_name">Teacher Last Name: *</label>
+            <input type="text" id="last_name" placeholder="e.g. Connor" required>
+          </div>
+        </div>
+
+        <!-- Department and Grade -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="department">Department / Subject: *</label>
+            <input type="text" id="department" placeholder="e.g. Mathematics, Science, English" required>
+          </div>
+          <div class="form-group">
+            <label for="grade_level">Grade Level(s) Taught: *</label>
+            <input type="text" id="grade_level" placeholder="e.g. 7-8 or 9th Grade" required>
+          </div>
+        </div>
+
+        <!-- Bio / Description -->
+        <div class="form-group">
+          <label for="bio">Short Description / Bio (Optional):</label>
+          <textarea 
+            id="bio" 
+            rows="3" 
+            placeholder="e.g. Teaches 8th grade Physical Science and advises the Robotics Club."
+          ></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-accent btn-large">✅ Create Teacher Profile</button>
+          <a href="/" class="btn btn-outline btn-large">Cancel</a>
+        </div>
+      </form>
+
+      <!-- Community Guidelines Notice -->
+      <div class="community-notice">
+        <h4>ℹ️ Community Note:</h4>
+        <p>Please double-check spelling before submitting to ensure your teacher profile is easy for classmates to find.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Rate My Teacher • Congressional App Challenge • 100% Anonymous & COPPA Compliant</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
