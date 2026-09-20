@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS teachers;
 DROP TABLE IF EXISTS schools;
+DROP TABLE IF EXISTS password_resets;
 
 -- =========================================================================
 -- 1. SCHOOLS TABLE
@@ -51,9 +52,10 @@ CREATE TABLE users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     school_id INTEGER,
     username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL, -- Required for login & password reset
     password_hash TEXT NOT NULL,
-    grade_level INTEGER CHECK(grade_level BETWEEN 1 AND 12),
-    role TEXT CHECK(role IN ('student', 'moderator', 'admin')) DEFAULT 'student',
+    grade_level INTEGER CHECK(grade_level BETWEEN 1 AND 12), -- Optional for teachers
+    role TEXT CHECK(role IN ('student', 'teacher', 'moderator', 'admin')) DEFAULT 'student',
     is_active INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE SET NULL
@@ -147,6 +149,20 @@ CREATE TABLE moderation_reports (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (review_id) REFERENCES reviews(review_id) ON DELETE CASCADE,
     FOREIGN KEY (reporter_user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- =========================================================================
+-- 10. PASSWORD_RESETS TABLE
+-- Tracks password reset tokens.
+-- =========================================================================
+CREATE TABLE password_resets (
+    reset_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    token TEXT UNIQUE NOT NULL,
+    expires_at DATETIME NOT NULL,
+    used INTEGER CHECK(used IN (0, 1)) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- =========================================================================
