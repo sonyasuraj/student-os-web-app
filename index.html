@@ -1,0 +1,2252 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>RateMyTeacher</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f7f8fc;
+
+            color: #222;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+
+            height: 70px;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 55px;
+
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+
+        .logo {
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            color: #111;
+        }
+
+
+        .logo span {
+
+            color: #4f46e5;
+        }
+
+
+        nav a {
+
+            text-decoration: none;
+
+            color: #444;
+
+            font-size: 15px;
+
+            margin-left: 28px;
+
+            font-weight: 600;
+        }
+
+
+        nav a:hover {
+
+            color: #4f46e5;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            background: white;
+
+            text-align: center;
+
+            padding: 70px 20px 55px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .hero h1 {
+
+            margin: 0 0 12px;
+
+            font-size: 44px;
+
+            color: #111;
+        }
+
+
+        .hero p {
+
+            margin: 0 0 30px;
+
+            color: #777;
+
+            font-size: 17px;
+        }
+
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+            position: relative;
+        }
+
+
+        .search-wrapper {
+
+            position: relative;
+
+            width: 560px;
+
+            max-width: 90%;
+        }
+
+
+        .search-input-row {
+
+            height: 58px;
+
+            background: white;
+
+            border: 1px solid #d9d9d9;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 18px;
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .search-input-row:focus-within {
+
+            border-color: #4f46e5;
+
+            box-shadow:
+                0 0 0 3px rgba(
+                    79,
+                    70,
+                    229,
+                    0.10
+                );
+        }
+
+
+        .search-icon {
+
+            font-size: 27px;
+
+            margin-right: 12px;
+
+            color: #222;
+
+            line-height: 1;
+        }
+
+
+        .search-box {
+
+            width: 100%;
+
+            border: none;
+
+            outline: none;
+
+            font-size: 16px;
+
+            color: #222;
+
+            background: transparent;
+        }
+
+
+        .search-box::placeholder {
+
+            color: #999;
+        }
+
+
+        .search-button {
+
+            height: 58px;
+
+            padding: 0 25px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #4f46e5;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .search-button:hover {
+
+            background: #3730a3;
+        }
+
+
+        /* =========================
+           SEARCH SUGGESTIONS
+        ========================= */
+
+        .search-suggestions {
+
+            position: absolute;
+
+            top: 66px;
+
+            left: 0;
+
+            right: 0;
+
+            background: white;
+
+            border-radius: 14px;
+
+            border: 1px solid #e7e7e7;
+
+            box-shadow:
+                0 10px 30px rgba(
+                    0,
+                    0,
+                    0,
+                    0.15
+                );
+
+            overflow: hidden;
+
+            z-index: 1000;
+
+            display: none;
+
+            max-height: 430px;
+
+            overflow-y: auto;
+
+            text-align: left;
+        }
+
+
+        .search-suggestions.show {
+
+            display: block;
+        }
+
+
+        .teacher-suggestion {
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 16px 18px;
+
+            text-decoration: none;
+
+            color: #111;
+
+            border-bottom: 1px solid #eeeeee;
+
+            transition:
+                background 0.15s ease;
+        }
+
+
+        .teacher-suggestion:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .teacher-suggestion:hover {
+
+            background: #f5f6ff;
+        }
+
+
+        .teacher-suggestion-icon {
+
+            width: 44px;
+
+            height: 44px;
+
+            min-width: 44px;
+
+            border-radius: 50%;
+
+            background: #eef0ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-right: 14px;
+
+            font-size: 21px;
+        }
+
+
+        .teacher-suggestion-info {
+
+            min-width: 0;
+        }
+
+
+        .teacher-suggestion-name {
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            margin-bottom: 5px;
+        }
+
+
+        .teacher-suggestion-details {
+
+            font-size: 13px;
+
+            color: #777;
+
+            line-height: 1.4;
+        }
+
+
+        .search-no-results {
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FILTERS
+        ========================= */
+
+        .filters {
+
+            background: white;
+
+            padding: 25px 55px;
+
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+
+        .filters-inner {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 14px;
+        }
+
+
+        .filter-group label {
+
+            display: block;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #666;
+
+            margin-bottom: 7px;
+
+            text-transform: uppercase;
+        }
+
+
+        .filter-group select {
+
+            width: 100%;
+
+            height: 44px;
+
+            border: 1px solid #d7d7d7;
+
+            border-radius: 9px;
+
+            background: white;
+
+            padding: 0 10px;
+
+            font-size: 14px;
+
+            color: #333;
+
+            outline: none;
+        }
+
+
+        .filter-group select:focus {
+
+            border-color: #4f46e5;
+        }
+
+
+        /* =========================
+           TEACHERS SECTION
+        ========================= */
+
+        .teachers {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 45px 30px 70px;
+        }
+
+
+        .teachers-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .teachers-header h2 {
+
+            margin: 0;
+
+            font-size: 25px;
+        }
+
+
+        .teacher-count {
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           TEACHER GRID
+        ========================= */
+
+        .teacher-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .teacher-card {
+
+            background: white;
+
+            border: 1px solid #e6e6e6;
+
+            border-radius: 15px;
+
+            padding: 23px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-height: 275px;
+
+            box-shadow:
+                0 3px 12px rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
+
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+
+        .teacher-card:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+        }
+
+
+        .teacher-card h3 {
+
+            margin: 0 0 8px;
+
+            font-size: 20px;
+        }
+
+
+        .school-name {
+
+            color: #555;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .teacher-subject {
+
+            color: #4f46e5;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+
+        .teacher-grade {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .rating {
+
+            margin-top: auto;
+
+            padding-top: 12px;
+
+            border-top: 1px solid #eee;
+        }
+
+
+        .stars {
+
+            letter-spacing: 2px;
+
+            font-size: 17px;
+        }
+
+
+        .rating-text {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-left: 6px;
+        }
+
+
+        .view-button {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            padding: 11px;
+
+            border-radius: 9px;
+
+            background: #4f46e5;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        .view-button:hover {
+
+            background: #3730a3;
+        }
+
+
+        /* =========================
+           NO RESULTS
+        ========================= */
+
+        #no-results {
+
+            display: none;
+
+            text-align: center;
+
+            color: #777;
+
+            padding: 45px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            border: 1px solid #eee;
+        }
+
+
+        /* =========================
+           ADD TEACHER
+        ========================= */
+
+        .add-teacher {
+
+            text-align: center;
+
+            margin-top: 50px;
+
+            padding: 35px;
+
+            background: white;
+
+            border: 1px solid #e5e5e5;
+
+            border-radius: 15px;
+        }
+
+
+        .add-teacher h3 {
+
+            margin: 0 0 8px;
+        }
+
+
+        .add-teacher p {
+
+            color: #777;
+
+            margin: 0 0 20px;
+        }
+
+
+        .add-teacher-button {
+
+            display: inline-block;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            background: #111;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            border: none;
+
+            font-size: 14px;
+        }
+
+
+        .add-teacher-button:hover {
+
+            background: #333;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            background: white;
+
+            border-top: 1px solid #ddd;
+
+            text-align: center;
+
+            padding: 25px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           TABLET
+        ========================= */
+
+        @media (max-width: 950px) {
+
+            .filters-inner {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .teacher-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        /* =========================
+           PHONE
+        ========================= */
+
+        @media (max-width: 650px) {
+
+            nav {
+
+                padding: 0 20px;
+            }
+
+
+            nav a {
+
+                margin-left: 10px;
+
+                font-size: 13px;
+            }
+
+
+            .hero {
+
+                padding: 50px 15px;
+            }
+
+
+            .hero h1 {
+
+                font-size: 34px;
+            }
+
+
+            .search-container {
+
+                flex-direction: column;
+
+                align-items: center;
+            }
+
+
+            .search-wrapper {
+
+                width: 92%;
+
+                max-width: none;
+            }
+
+
+            .search-button {
+
+                width: 92%;
+
+                margin: 0;
+            }
+
+
+            .filters {
+
+                padding: 20px;
+            }
+
+
+            .filters-inner {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .teachers {
+
+                padding: 30px 20px 60px;
+            }
+
+
+            .teachers-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 7px;
+            }
+
+
+            .teacher-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav>
+
+        <div class="logo">
+            Rate<span>MyTeacher</span>
+        </div>
+
+        <div>
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="#teachers">
+                Teachers
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <h1>
+            Find Your Teachers
+        </h1>
+
+        <p>
+            Anonymous, safe & honest teacher ratings
+            by students, for students!
+        </p>
+
+
+        <div class="search-container">
+
+            <div class="search-wrapper">
+
+                <div class="search-input-row">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-box"
+                        placeholder="Search by teacher, subject, school..."
+                        autocomplete="off"
+                        aria-autocomplete="list"
+                    >
+
+                </div>
+
+
+                <div
+                    id="searchSuggestions"
+                    class="search-suggestions"
+                ></div>
+
+            </div>
+
+
+            <button
+                id="searchButton"
+                class="search-button"
+            >
+                Search
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FILTERS
+    ========================= -->
+
+    <section class="filters">
+
+        <div class="filters-inner">
+
+
+            <div class="filter-group">
+
+                <label>
+                    State
+                </label>
+
+                <select id="stateFilter">
+
+                    <option value="">
+                        All States
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    District
+                </label>
+
+                <select id="districtFilter">
+
+                    <option value="">
+                        All Districts
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    School
+                </label>
+
+                <select id="schoolFilter">
+
+                    <option value="">
+                        All Schools
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    Grade
+                </label>
+
+                <select id="gradeFilter">
+
+                    <option value="">
+                        All Grades
+                    </option>
+
+                    <option value="7">
+                        Grade 7
+                    </option>
+
+                    <option value="8">
+                        Grade 8
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    Subject
+                </label>
+
+                <select id="subjectFilter">
+
+                    <option value="">
+                        All Subjects
+                    </option>
+
+                    <option value="English">
+                        English
+                    </option>
+
+                    <option value="Mathematics">
+                        Mathematics
+                    </option>
+
+                    <option value="Math">
+                        Math
+                    </option>
+
+                    <option value="History">
+                        History
+                    </option>
+
+                    <option value="Social Studies">
+                        Social Studies
+                    </option>
+
+                    <option value="Science">
+                        Science
+                    </option>
+
+                    <option value="Physical Education">
+                        Physical Education
+                    </option>
+
+                    <option value="Special Education">
+                        Special Education
+                    </option>
+
+                    <option value="Electives">
+                        Electives
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         TEACHERS
+    ========================= -->
+
+    <section
+        class="teachers"
+        id="teachers"
+    >
+
+        <div class="teachers-header">
+
+            <h2>
+                Teachers
+            </h2>
+
+            <span
+                class="teacher-count"
+                id="teacherCount"
+            >
+                Loading teachers...
+            </span>
+
+        </div>
+
+
+        <div
+            class="teacher-grid"
+            id="teacherGrid"
+        ></div>
+
+
+        <p id="no-results">
+            No teachers found.
+        </p>
+
+
+
+        <!-- =========================
+             ADD TEACHER
+        ========================= -->
+
+        <div class="add-teacher">
+
+            <h3>
+                Can't find your teacher?
+            </h3>
+
+            <p>
+                Help us add a new teacher profile.
+            </p>
+
+            <button
+                class="add-teacher-button"
+                id="addTeacherButton"
+            >
+                + Submit a New Teacher Profile
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer id="about">
+
+        <p>
+            © 2026 RateMyTeacher
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        /*
+         * Get elements from the page.
+         */
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        const searchButton =
+            document.getElementById(
+                "searchButton"
+            );
+
+
+        const searchSuggestions =
+            document.getElementById(
+                "searchSuggestions"
+            );
+
+
+        const stateFilter =
+            document.getElementById(
+                "stateFilter"
+            );
+
+
+        const districtFilter =
+            document.getElementById(
+                "districtFilter"
+            );
+
+
+        const schoolFilter =
+            document.getElementById(
+                "schoolFilter"
+            );
+
+
+        const gradeFilter =
+            document.getElementById(
+                "gradeFilter"
+            );
+
+
+        const subjectFilter =
+            document.getElementById(
+                "subjectFilter"
+            );
+
+
+        const teacherGrid =
+            document.getElementById(
+                "teacherGrid"
+            );
+
+
+        const noResults =
+            document.getElementById(
+                "no-results"
+            );
+
+
+        const teacherCount =
+            document.getElementById(
+                "teacherCount"
+            );
+
+
+        const addTeacherButton =
+            document.getElementById(
+                "addTeacherButton"
+            );
+
+
+        let searchTimeout;
+
+
+
+        /* =========================
+           HTML SAFETY
+        ========================= */
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.textContent =
+                value ?? "";
+
+            return div.innerHTML;
+        }
+
+
+
+        /* =========================
+           LOAD STATES
+        ========================= */
+
+        async function loadStates() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/states"
+                    );
+
+
+                const states =
+                    await response.json();
+
+
+                states.forEach(function(state) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        state.state ||
+                        state;
+
+                    option.textContent =
+                        state.state ||
+                        state;
+
+                    stateFilter.appendChild(
+                        option
+                    );
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load states:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* =========================
+           LOAD DISTRICTS
+        ========================= */
+
+        async function loadDistricts() {
+
+            districtFilter.innerHTML = `
+                <option value="">
+                    All Districts
+                </option>
+            `;
+
+
+            const state =
+                stateFilter.value;
+
+
+            try {
+
+                const url =
+                    state
+                        ? `/api/districts?state=${encodeURIComponent(state)}`
+                        : "/api/districts";
+
+
+                const response =
+                    await fetch(url);
+
+
+                const districts =
+                    await response.json();
+
+
+                districts.forEach(function(district) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        district.district ||
+                        district;
+
+
+                    option.textContent =
+                        district.district ||
+                        district;
+
+
+                    districtFilter.appendChild(
+                        option
+                    );
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load districts:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* =========================
+           LOAD SCHOOLS
+        ========================= */
+
+        async function loadSchools() {
+
+            schoolFilter.innerHTML = `
+                <option value="">
+                    All Schools
+                </option>
+            `;
+
+
+            const state =
+                stateFilter.value;
+
+
+            const district =
+                districtFilter.value;
+
+
+            try {
+
+                const params =
+                    new URLSearchParams();
+
+
+                if (state) {
+
+                    params.append(
+                        "state",
+                        state
+                    );
+
+                }
+
+
+                if (district) {
+
+                    params.append(
+                        "district",
+                        district
+                    );
+
+                }
+
+
+                const response =
+                    await fetch(
+                        `/api/school-options?${params.toString()}`
+                    );
+
+
+                const schools =
+                    await response.json();
+
+
+                schools.forEach(function(school) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        school.school_id;
+
+
+                    option.textContent =
+                        school.name;
+
+
+                    schoolFilter.appendChild(
+                        option
+                    );
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load schools:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* =========================
+           SEARCH DATABASE
+        ========================= */
+
+        async function getTeachers() {
+
+            const params =
+                new URLSearchParams();
+
+
+            const query =
+                searchInput.value.trim();
+
+
+            const state =
+                stateFilter.value;
+
+
+            const district =
+                districtFilter.value;
+
+
+            const school =
+                schoolFilter.value;
+
+
+            const grade =
+                gradeFilter.value;
+
+
+            const subject =
+                subjectFilter.value;
+
+
+            if (query) {
+
+                params.append(
+                    "q",
+                    query
+                );
+
+            }
+
+
+            if (state) {
+
+                params.append(
+                    "state",
+                    state
+                );
+
+            }
+
+
+            if (district) {
+
+                params.append(
+                    "district",
+                    district
+                );
+
+            }
+
+
+            if (school) {
+
+                params.append(
+                    "school_id",
+                    school
+                );
+
+            }
+
+
+            if (grade) {
+
+                params.append(
+                    "grade",
+                    grade
+                );
+
+            }
+
+
+            if (subject) {
+
+                params.append(
+                    "subject",
+                    subject
+                );
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/search?${params.toString()}`
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Search request failed"
+                    );
+
+                }
+
+
+                return await response.json();
+
+            } catch (error) {
+
+                console.error(
+                    "Search error:",
+                    error
+                );
+
+                return [];
+
+            }
+
+        }
+
+
+
+        /* =========================
+           SHOW TEACHER CARDS
+        ========================= */
+
+        function displayTeachers(teachers) {
+
+            teacherGrid.innerHTML = "";
+
+
+            teacherCount.textContent =
+                `Found ${teachers.length} Teachers`;
+
+
+            if (
+                !teachers ||
+                teachers.length === 0
+            ) {
+
+                noResults.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            noResults.style.display =
+                "none";
+
+
+            teachers.forEach(function(teacher) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "teacher-card";
+
+
+                const name =
+                    `${teacher.first_name || ""} ${teacher.last_name || ""}`.trim();
+
+
+                const school =
+                    teacher.school_name ||
+                    "School not listed";
+
+
+                const department =
+                    teacher.department ||
+                    "Teacher";
+
+
+                const grade =
+                    teacher.grade_level ||
+                    "";
+
+
+                const rating =
+                    teacher.overall_rating ??
+                    teacher.rating_overall;
+
+
+                const reviewCount =
+                    teacher.review_count ??
+                    teacher.reviews ??
+                    0;
+
+
+                let ratingHTML;
+
+
+                if (
+                    rating !== null &&
+                    rating !== undefined &&
+                    Number(rating) > 0
+                ) {
+
+                    const numericRating =
+                        Number(rating);
+
+
+                    const rounded =
+                        Math.round(
+                            numericRating
+                        );
+
+
+                    const stars =
+                        "★".repeat(
+                            rounded
+                        ) +
+                        "☆".repeat(
+                            5 - rounded
+                        );
+
+
+                    ratingHTML = `
+
+                        <div class="rating">
+
+                            <span class="stars">
+                                ${stars}
+                            </span>
+
+                            <span class="rating-text">
+                                ${numericRating.toFixed(1)}/5
+                                • ${reviewCount} Reviews
+                            </span>
+
+                        </div>
+
+                    `;
+
+                } else {
+
+                    ratingHTML = `
+
+                        <div class="rating">
+
+                            <span class="stars">
+                                ☆☆☆☆☆
+                            </span>
+
+                            <span class="rating-text">
+                                No ratings yet
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                /*
+                 * We use teacher_id so every
+                 * teacher has their own unique
+                 * profile URL.
+                 */
+
+                const teacherID =
+                    teacher.teacher_id;
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${escapeHtml(name)}
+                    </h3>
+
+                    <div class="school-name">
+                        🏫 ${escapeHtml(school)}
+                    </div>
+
+                    <div class="teacher-subject">
+                        ${escapeHtml(department)}
+                    </div>
+
+                    <div class="teacher-grade">
+                        ${escapeHtml(grade)}
+                    </div>
+
+                    ${ratingHTML}
+
+                    <a
+                        class="view-button"
+                        href="/teacher.html?teacher=${encodeURIComponent(teacherID)}"
+                    >
+                        View Reviews & Rate
+                    </a>
+
+                `;
+
+
+                teacherGrid.appendChild(
+                    card
+                );
+
+            });
+
+        }
+
+
+
+        /* =========================
+           SEARCH SUGGESTIONS
+        ========================= */
+
+        async function showSearchSuggestions() {
+
+            const query =
+                searchInput.value.trim();
+
+
+            /*
+             * Empty search = close dropdown.
+             */
+
+            if (!query) {
+
+                searchSuggestions.innerHTML =
+                    "";
+
+                searchSuggestions.classList.remove(
+                    "show"
+                );
+
+                return;
+
+            }
+
+
+            const teachers =
+                await getTeachers();
+
+
+            searchSuggestions.innerHTML =
+                "";
+
+
+            if (
+                !teachers ||
+                teachers.length === 0
+            ) {
+
+                searchSuggestions.innerHTML = `
+
+                    <div class="search-no-results">
+
+                        No teachers found.
+
+                    </div>
+
+                `;
+
+                searchSuggestions.classList.add(
+                    "show"
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Only show the first 7
+             * autocomplete suggestions.
+             */
+
+            teachers
+                .slice(0, 7)
+                .forEach(function(teacher) {
+
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    link.className =
+                        "teacher-suggestion";
+
+
+                    link.href =
+                        `/teacher.html?teacher=${encodeURIComponent(teacher.teacher_id)}`;
+
+
+                    const name =
+                        `${teacher.first_name || ""} ${teacher.last_name || ""}`.trim();
+
+
+                    const school =
+                        teacher.school_name ||
+                        "School not listed";
+
+
+                    const department =
+                        teacher.department ||
+                        "Teacher";
+
+
+                    link.innerHTML = `
+
+                        <div class="teacher-suggestion-icon">
+                            👤
+                        </div>
+
+                        <div class="teacher-suggestion-info">
+
+                            <div class="teacher-suggestion-name">
+                                ${escapeHtml(name)}
+                            </div>
+
+                            <div class="teacher-suggestion-details">
+                                ${escapeHtml(school)}
+                                •
+                                ${escapeHtml(department)}
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    link.addEventListener(
+                        "click",
+                        function() {
+
+                            searchSuggestions.classList.remove(
+                                "show"
+                            );
+
+                        }
+                    );
+
+
+                    searchSuggestions.appendChild(
+                        link
+                    );
+
+                });
+
+
+            searchSuggestions.classList.add(
+                "show"
+            );
+
+        }
+
+
+
+        /* =========================
+           INPUT EVENT
+        ========================= */
+
+        searchInput.addEventListener(
+            "input",
+            function() {
+
+                clearTimeout(
+                    searchTimeout
+                );
+
+
+                searchTimeout =
+                    setTimeout(
+                        async function() {
+
+                            await showSearchSuggestions();
+
+                        },
+                        150
+                    );
+
+            }
+        );
+
+
+
+        /* =========================
+           SEARCH BUTTON
+        ========================= */
+
+        searchButton.addEventListener(
+            "click",
+            async function() {
+
+                searchSuggestions.classList.remove(
+                    "show"
+                );
+
+
+                const teachers =
+                    await getTeachers();
+
+
+                displayTeachers(
+                    teachers
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           ENTER KEY
+        ========================= */
+
+        searchInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    const firstResult =
+                        searchSuggestions.querySelector(
+                            ".teacher-suggestion"
+                        );
+
+
+                    if (firstResult) {
+
+                        event.preventDefault();
+
+                        firstResult.click();
+
+                    } else {
+
+                        searchButton.click();
+
+                    }
+
+                }
+
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    searchSuggestions.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           CLOSE SEARCH DROPDOWN
+        ========================= */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    !event.target.closest(
+                        ".search-wrapper"
+                    )
+                ) {
+
+                    searchSuggestions.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           FILTER CHANGES
+        ========================= */
+
+        stateFilter.addEventListener(
+            "change",
+            async function() {
+
+                await loadDistricts();
+
+                await loadSchools();
+
+                const teachers =
+                    await getTeachers();
+
+                displayTeachers(
+                    teachers
+                );
+
+            }
+        );
+
+
+        districtFilter.addEventListener(
+            "change",
+            async function() {
+
+                await loadSchools();
+
+                const teachers =
+                    await getTeachers();
+
+                displayTeachers(
+                    teachers
+                );
+
+            }
+        );
+
+
+        schoolFilter.addEventListener(
+            "change",
+            async function() {
+
+                const teachers =
+                    await getTeachers();
+
+                displayTeachers(
+                    teachers
+                );
+
+            }
+        );
+
+
+        gradeFilter.addEventListener(
+            "change",
+            async function() {
+
+                const teachers =
+                    await getTeachers();
+
+                displayTeachers(
+                    teachers
+                );
+
+            }
+        );
+
+
+        subjectFilter.addEventListener(
+            "change",
+            async function() {
+
+                const teachers =
+                    await getTeachers();
+
+                displayTeachers(
+                    teachers
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           ADD TEACHER BUTTON
+        ========================= */
+
+        addTeacherButton.addEventListener(
+            "click",
+            function() {
+
+                alert(
+                    "The Add Teacher form will be connected here next."
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           INITIAL PAGE LOAD
+        ========================= */
+
+        async function initializePage() {
+
+            await loadStates();
+
+            await loadDistricts();
+
+            await loadSchools();
+
+
+            const teachers =
+                await getTeachers();
+
+
+            displayTeachers(
+                teachers
+            );
+
+        }
+
+
+        initializePage();
+
+    </script>
+
+
+</body>
+
+</html>
