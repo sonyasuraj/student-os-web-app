@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate My Teacher — Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo">🏫 Rate My Teacher</a>
+      <form action="/" method="GET" class="search-form">
+        <input 
+          type="text" 
+          name="q" 
+          placeholder="🔍 Search by teacher, subject, school..." 
+          value="{{ search_query or '' }}"
+          class="search-input"
+        >
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      <a href="/add-teacher" class="btn btn-accent">+ Add Teacher</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <h1>🌟 Honest & Anonymous Teacher Feedback</h1>
+      <p>100% private, safe, and student-powered. Find your teachers and share your experiences!</p>
+    </section>
+
+    <!-- Filter Bar -->
+    <section class="filter-card">
+      <form action="/" method="GET" class="filter-form">
+        {% if search_query %}
+          <input type="hidden" name="q" value="{{ search_query }}">
+        {% endif %}
+
+        <div class="filter-group">
+          <label for="department">Subject / Department:</label>
+          <select name="department" id="department" onchange="this.form.submit()">
+            <option value="">All Subjects</option>
+            <option value="Mathematics" {% if selected_department == 'Mathematics' %}selected{% endif %}>Mathematics</option>
+            <option value="Science" {% if selected_department == 'Science' %}selected{% endif %}>Science</option>
+            <option value="English" {% if selected_department == 'English' %}selected{% endif %}>English / Language Arts</option>
+            <option value="History" {% if selected_department == 'History' %}selected{% endif %}>History / Social Studies</option>
+            <option value="Art" {% if selected_department == 'Art' %}selected{% endif %}>Art & Music</option>
+            <option value="Physical Education" {% if selected_department == 'Physical Education' %}selected{% endif %}>Physical Education</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="grade">Grade Level:</label>
+          <select name="grade" id="grade" onchange="this.form.submit()">
+            <option value="">All Grades</option>
+            <option value="6" {% if selected_grade == '6' %}selected{% endif %}>Grade 6</option>
+            <option value="7" {% if selected_grade == '7' %}selected{% endif %}>Grade 7</option>
+            <option value="8" {% if selected_grade == '8' %}selected{% endif %}>Grade 8</option>
+            <option value="9" {% if selected_grade == '9' %}selected{% endif %}>High School (9-12)</option>
+          </select>
+        </div>
+
+        {% if search_query or selected_department or selected_grade %}
+          <a href="/" class="btn btn-outline">Reset Filters</a>
+        {% endif %}
+      </form>
+    </section>
+
+    <!-- Teacher Directory List -->
+    <section class="teacher-list-section">
+      <div class="section-header">
+        <h2>Teachers Directory ({{ teachers|length }})</h2>
+      </div>
+
+      {% if teachers %}
+        <div class="teacher-grid">
+          {% for teacher in teachers %}
+            <article class="teacher-card">
+              <div class="teacher-info">
+                <h3>👨‍🏫 {{ teacher.first_name }} {{ teacher.last_name }}</h3>
+                <p class="school-label">🏫 {{ teacher.school_name }} • {{ teacher.school_city }}, {{ teacher.school_state }}</p>
+                <div class="badges">
+                  <span class="badge badge-dept">{{ teacher.department }}</span>
+                  <span class="badge badge-grade">Grades {{ teacher.grade_level }}</span>
+                </div>
+                {% if teacher.bio %}
+                  <p class="teacher-bio">"{{ teacher.bio }}"</p>
+                {% endif %}
+              </div>
+
+              <div class="teacher-stats">
+                <div class="rating-badge">
+                  {% if teacher.avg_overall %}
+                    <span class="stars-text">⭐ {{ teacher.avg_overall }}</span>
+                    <span class="scale">/ 5.0</span>
+                  {% else %}
+                    <span class="stars-new">🌟 New</span>
+                  {% endif %}
+                </div>
+                <p class="review-count">💬 {{ teacher.total_reviews }} Reviews</p>
+                {% if teacher.avg_difficulty %}
+                  <p class="difficulty-stat">📊 Difficulty: {{ teacher.avg_difficulty }} / 5.0</p>
+                {% endif %}
+                <a href="/teacher/{{ teacher.teacher_id }}" class="btn btn-primary btn-block">View Reviews & Rate ➔</a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <!-- Empty State -->
+        <div class="empty-state-card">
+          <div class="empty-icon">🔍</div>
+          <h3>No Teachers Found</h3>
+          <p>We couldn't find any teachers matching your search or filters.</p>
+          <a href="/add-teacher" class="btn btn-accent">+ Add This Teacher Now</a>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- Add Teacher Callout Footer -->
+    <section class="add-callout">
+      <h3>Can't find your teacher?</h3>
+      <p>Help your classmates by adding teachers to our school directory!</p>
+      <a href="/add-teacher" class="btn btn-accent">+ Submit a New Teacher Profile</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Rate My Teacher • Congressional App Challenge • 100% Anonymous & COPPA Compliant</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>

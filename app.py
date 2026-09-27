@@ -499,6 +499,7 @@ def search():
 
     else:
 
+<<<<<<< HEAD
         query += """
             ORDER BY
                 t.last_name,
@@ -626,3 +627,6 @@ if __name__ == "__main__":
         host="127.0.0.1",
         port=5000
     )
+=======
+        st.warning("Please enter an assignment name and subject.")
+>>>>>>> 83afd469fb6592a0fca7108aaff122faada6453f

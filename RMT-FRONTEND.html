@@ -1,4 +1,8 @@
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -428,277 +432,6 @@
             id="teacherGrid"
         >
 
-
-            <!-- KRATOFIL -->
-
-            <div class="teacher-card">
-
-                <h3>Kratofil</h3>
-
-                <p class="team-grade">
-                    TAMBO • GRADE 7
-                </p>
-
-                <p class="subject">
-                    World History and Geography 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- SCHANTZ -->
-
-            <div class="teacher-card">
-
-                <h3>Schantz</h3>
-
-                <p class="team-grade">
-                    TAMBO • GRADE 7
-                </p>
-
-                <p class="subject">
-                    English 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- SHAW -->
-
-            <div class="teacher-card">
-
-                <h3>Shaw</h3>
-
-                <p class="team-grade">
-                    TAMBO • GRADE 7
-                </p>
-
-                <p class="subject">
-                    Math 7 and AM7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- SCIENCE JAMES -->
-
-            <div class="teacher-card">
-
-                <h3>Science James</h3>
-
-                <p class="team-grade">
-                    TAMBO • GRADE 7
-                </p>
-
-                <p class="subject">
-                    Science 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- VANDYKE -->
-
-            <div class="teacher-card">
-
-                <h3>VanDyke</h3>
-
-                <p class="team-grade">
-                    TAMBO • GRADE 7
-                </p>
-
-                <p class="subject">
-                    AM7, Science 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- MALCOLM -->
-
-            <div class="teacher-card">
-
-                <h3>Malcolm</h3>
-
-                <p class="team-grade">
-                    YELLOWSTONE • GRADE 7
-                </p>
-
-                <p class="subject">
-                    Science 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- CABRERA -->
-
-            <div class="teacher-card">
-
-                <h3>Cabrera</h3>
-
-                <p class="team-grade">
-                    YELLOWSTONE • GRADE 7
-                </p>
-
-                <p class="subject">
-                    English 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
-
-
-            <!-- SCHNEIDER -->
-
-            <div class="teacher-card">
-
-                <h3>Schneider</h3>
-
-                <p class="team-grade">
-                    YELLOWSTONE • GRADE 7
-                </p>
-
-                <p class="subject">
-                    English 7
-                </p>
-
-                <div class="rating">
-
-                    <span class="stars">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span class="rating-text">
-                        No ratings yet
-                    </span>
-
-                </div>
-
-                <a href="#" class="view-button">
-                    View Reviews
-                </a>
-
-            </div>
-
         </div>
 
 
@@ -723,6 +456,65 @@
     </footer>
 
 
+
+
+    <!-- TEACHER DATA + CARD OUTPUT -->
+    <script>
+        const teachers = [
+            { id: "Bangasser", name: "Christopher Bangasser", team: "GRADE 8", subject: "English" },
+            { id: "Cabrera", name: "Tiffany Cabrera", team: "YELLOWSTONE • GRADE 7", subject: "English" },
+            { id: "Eledavis", name: "Elena Davis", team: "GRADE 8", subject: "English" },
+            { id: "Schneider", name: "Julie Schneider", team: "YELLOWSTONE • GRADE 7", subject: "English" },
+            { id: "Sifferman", name: "Kristen Sifferman", team: "GRADE 8", subject: "English" },
+            { id: "Simmons", name: "Lisa Simmons", team: "TAMBO • GRADE 7", subject: "English" },
+            { id: "Smith", name: "Athanasia Smith", team: "GRADE 8", subject: "English and History" },
+            { id: "Choi", name: "Karen Choi", team: "GRADE 8", subject: "Mathematics" },
+            { id: "Day", name: "Lesley Day", team: "GRADE 7", subject: "Mathematics" },
+            { id: "Fajardo", name: "Anna Fajardo", team: "GRADE 8", subject: "Mathematics" },
+            { id: "Grandbois", name: "Kim Grandbois", team: "GRADE 8", subject: "Math and AM7" },
+            { id: "Groller", name: "Laura Groller", team: "GRADE 7", subject: "Math" },
+            { id: "Joyce", name: "Kim Joyce", team: "GRADE 8", subject: "Math, Spanish Teacher, and Department Chair" },
+            { id: "Mandel", name: "Mitzi Mandel", team: "GRADE 8", subject: "Math 8" },
+            { id: "Rippe", name: "Alicia Rippe", team: "GRADE 8", subject: "Math 8" },
+            { id: "Shaw", name: "Kirsten Shaw", team: "TAMBO • GRADE 7", subject: "Math 7 and AM7" },
+            { id: "VanDyke", name: "Lisa Van Dyke", team: "GRADE 7", subject: "AM7 and Science" },
+            { id: "JanelleBurkholder", name: "Janelle Burkholder", team: "TYGER * GRADE 7", subject: "History Teacher" },
+            { id: "SkylarHogan", name: "Skylar Hogan", team: "GRADE 8", subject: "History Teacher" },
+            { id: "RonIppolito", name: "Ron Ippolito", team: "GRADE 8", subject: "History Teacher, Rio TV Advisor" },
+            { id: "BradleyKnutsen", name: "Bradley Knutsen", team: "GRADE 8", subject: "History Teacher, Department Chair, ASB Director" },
+            { id: "JeanetteKratofil", name: "Jeanette Kratofil", team: "TAMBO * GRADE 7", subject: "History Teacher" },
+            { id: "JerryMalkowski", name: "Jerry Malkowski", team: "GRADE 8", subject: "History Teacher" },
+            { id: "JenniferPulaski", name: "Jennifer Pulaski", team: "YELLOWSTONE * GRADE 7", subject: "History Teacher" },
+            { id: "MatthewSheridan", name: "Matthew Sheridan", team: "UNKNOWN", subject: "History Teacher" },
+            { id: "ShalenBurwellCasini", name: "Shalen Burwell (Casini)", team: "SPECIAL EDUCATION", subject: "Special Education Teacher" },
+            { id: "HeatherCruz", name: "Heather Cruz", team: "SPECIAL EDUCATION", subject: "Special Education Teacher" },
+            { id: "AshaKakonde", name: "Asha Kakonde", team: "SPECIAL EDUCATION", subject: "Special Education Teacher" }
+        ];
+
+        const teacherGrid = document.getElementById("teacherGrid");
+
+        teachers.forEach(function(teacher) {
+            const card = document.createElement("div");
+            card.className = "teacher-card";
+
+            card.innerHTML = `
+                <h3>${teacher.name}</h3>
+                <p class="team-grade">${teacher.team}</p>
+                <p class="subject">${teacher.subject}</p>
+
+                <div class="rating">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span class="rating-text">No ratings yet</span>
+                </div>
+
+                <a href="teacher.html?teacher=${teacher.id}" class="view-button">
+                    View Reviews
+                </a>
+            `;
+
+            teacherGrid.appendChild(card);
+        });
+    </script>
 
     <!-- =========================
          SEARCH JAVASCRIPT

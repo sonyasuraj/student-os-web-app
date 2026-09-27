@@ -1,20 +1,19 @@
--- Ensure SQLite strictly enforces foreign key constraints
+-- Enforce foreign key constraints
 PRAGMA foreign_keys = ON;
 
--- Drop tables if they exist (useful for testing/resetting the database)
+-- Drop tables in dependency order for clean recreation
 DROP TABLE IF EXISTS review_responses;
 DROP TABLE IF EXISTS review_votes;
 DROP TABLE IF EXISTS review_tags;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS moderation_reports;
 DROP TABLE IF EXISTS reviews;
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS teachers;
 DROP TABLE IF EXISTS schools;
 
 -- =========================================================================
 -- 1. SCHOOLS TABLE
--- Parent of both Teachers and Users.
+-- Directory of schools.
 -- =========================================================================
 CREATE TABLE schools (
     school_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,61 +28,44 @@ CREATE TABLE schools (
 
 -- =========================================================================
 -- 2. TEACHERS TABLE
--- Belongs to a School (Many-to-One).
+-- Crowdsourced teacher profiles. Anyone can add a teacher.
 -- =========================================================================
 CREATE TABLE teachers (
     teacher_id INTEGER PRIMARY KEY AUTOINCREMENT,
     school_id INTEGER NOT NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    department TEXT, -- e.g., 'Math', 'Science', '5th Grade'
-    grade_level TEXT, -- e.g., '6-8', '10'
+    department TEXT NOT NULL,       -- e.g., 'Math', 'Science', 'English', '5th Grade'
+    grade_level TEXT NOT NULL,      -- e.g., '6-8', '10th Grade'
+    bio TEXT,                       -- Optional description or subjects taught
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE CASCADE
 );
 
 -- =========================================================================
--- 3. USERS TABLE
--- Can optionally belong to a School.
--- Designed with minimal PII (COPPA compliant). No real names or emails.
--- =========================================================================
-CREATE TABLE users (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    school_id INTEGER,
-    username TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    grade_level INTEGER CHECK(grade_level BETWEEN 1 AND 12),
-    role TEXT CHECK(role IN ('student', 'moderator', 'admin')) DEFAULT 'student',
-    is_active INTEGER DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE SET NULL
-);
-
--- =========================================================================
--- 4. REVIEWS TABLE
--- The core transactional table.
--- Links a User (Author) to a Teacher (Subject).
+-- 3. REVIEWS TABLE (100% Anonymous Submissions)
+-- Uses client_fingerprint_hash to throttle review spam.
 -- =========================================================================
 CREATE TABLE reviews (
     review_id INTEGER PRIMARY KEY AUTOINCREMENT,
     teacher_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
-    course_name TEXT, -- e.g., 'AP Biology', 'Algebra 1'
+    course_name TEXT,               -- e.g., 'Algebra 1', 'AP Biology'
+    reviewer_role TEXT CHECK(reviewer_role IN ('student', 'parent', 'alumni', 'other')) DEFAULT 'student',
+    student_grade_level INTEGER CHECK(student_grade_level BETWEEN 1 AND 12),
     rating_overall INTEGER CHECK(rating_overall BETWEEN 1 AND 5) NOT NULL,
     rating_difficulty INTEGER CHECK(rating_difficulty BETWEEN 1 AND 5) NOT NULL,
     rating_helpfulness INTEGER CHECK(rating_helpfulness BETWEEN 1 AND 5) NOT NULL,
     review_text TEXT NOT NULL,
-    status TEXT CHECK(status IN ('pending', 'approved', 'rejected', 'flagged')) DEFAULT 'pending',
+    status TEXT CHECK(status IN ('pending', 'approved', 'rejected', 'flagged')) DEFAULT 'approved',
+    client_fingerprint_hash TEXT NOT NULL, -- Anonymous identifier to prevent spam
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    -- Prevents a user from spamming multiple reviews for the exact same class/teacher
-    UNIQUE(teacher_id, user_id, course_name) 
+    UNIQUE(teacher_id, course_name, client_fingerprint_hash)
 );
 
 -- =========================================================================
--- 5. TAGS LOOKUP TABLE
--- Predefined descriptors (e.g., "Tough Grader", "Fun Projects").
+-- 4. TAGS LOOKUP TABLE
+-- Predefined descriptors (e.g., 'Gives Good Feedback', 'Tough Grader').
 -- =========================================================================
 CREATE TABLE tags (
     tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,8 +73,8 @@ CREATE TABLE tags (
 );
 
 -- =========================================================================
--- 6. REVIEW_TAGS JUNCTION TABLE
--- Many-to-Many join table linking Reviews to Tags.
+-- 5. REVIEW_TAGS JUNCTION TABLE
+-- Many-to-Many mapping between Reviews and Tags.
 -- =========================================================================
 CREATE TABLE review_tags (
     review_id INTEGER NOT NULL,
@@ -103,57 +85,75 @@ CREATE TABLE review_tags (
 );
 
 -- =========================================================================
--- 7. REVIEW_VOTES TABLE
--- Stores Likes/Dislikes on reviews.
--- Links a User to a Review to enforce single-voting.
+-- 6. REVIEW_VOTES TABLE (Anonymous Likes & Dislikes)
+-- Tracks votes using the client hash so users can see their liked/disliked
+-- status and cannot vote more than once per review.
 -- =========================================================================
 CREATE TABLE review_votes (
     vote_id INTEGER PRIMARY KEY AUTOINCREMENT,
     review_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
-    vote_value INTEGER CHECK(vote_value IN (-1, 1)) NOT NULL, -- 1 = Like (Up), -1 = Dislike (Down)
+    client_fingerprint_hash TEXT NOT NULL,
+    vote_value INTEGER CHECK(vote_value IN (-1, 1)) NOT NULL, -- 1 = Like, -1 = Dislike
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (review_id) REFERENCES reviews(review_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    -- Enforces that a user can only vote on a specific review once
-    UNIQUE(review_id, user_id) 
+    UNIQUE(review_id, client_fingerprint_hash)
 );
 
 -- =========================================================================
--- 8. REVIEW_RESPONSES TABLE
--- Allows verified accounts/admins to post a single reply/clarification to a review.
+-- 7. REVIEW_RESPONSES TABLE (Anonymous Responses / Discussions)
+-- Anyone (teacher, student, or community member) can post a response.
+-- An optional 'responder_label' lets them state who they are (e.g. 'Teacher', 'Student').
 -- =========================================================================
 CREATE TABLE review_responses (
     response_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    review_id INTEGER UNIQUE NOT NULL, -- UNIQUE enforces a One-to-One reply limit per review
-    responder_user_id INTEGER NOT NULL,
+    review_id INTEGER NOT NULL,
+    responder_label TEXT DEFAULT 'Anonymous', -- e.g., 'Teacher', 'Fellow Student', 'Parent'
     response_text TEXT NOT NULL,
+    client_fingerprint_hash TEXT NOT NULL,   -- Prevents spamming responses
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (review_id) REFERENCES reviews(review_id) ON DELETE CASCADE,
-    FOREIGN KEY (responder_user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (review_id) REFERENCES reviews(review_id) ON DELETE CASCADE
 );
 
 -- =========================================================================
--- 9. MODERATION_REPORTS TABLE
--- Handles safety/flagging of inappropriate reviews.
+-- 8. MODERATION_REPORTS TABLE
+-- Anonymous flagging of inappropriate content.
 -- =========================================================================
 CREATE TABLE moderation_reports (
     report_id INTEGER PRIMARY KEY AUTOINCREMENT,
     review_id INTEGER NOT NULL,
-    reporter_user_id INTEGER NOT NULL,
     reason TEXT CHECK(reason IN ('bullying', 'inappropriate_language', 'false_information', 'other')) NOT NULL,
     notes TEXT,
+    reporter_fingerprint_hash TEXT,
     resolved INTEGER CHECK(resolved IN (0, 1)) DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (review_id) REFERENCES reviews(review_id) ON DELETE CASCADE,
-    FOREIGN KEY (reporter_user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (review_id) REFERENCES reviews(review_id) ON DELETE CASCADE
 );
 
 -- =========================================================================
 -- PERFORMANCE INDEXES
--- Recommended to ensure lookups remain instant as data scales.
 -- =========================================================================
 CREATE INDEX idx_teachers_school ON teachers(school_id);
 CREATE INDEX idx_teachers_name ON teachers(last_name, first_name);
 CREATE INDEX idx_reviews_teacher ON reviews(teacher_id);
 CREATE INDEX idx_reviews_status ON reviews(status);
+CREATE INDEX idx_reviews_fingerprint ON reviews(client_fingerprint_hash);
+CREATE INDEX idx_votes_fingerprint ON review_votes(client_fingerprint_hash);
+CREATE INDEX idx_responses_review ON review_responses(review_id);
+
+-- =========================================================================
+-- SEED DATA (For Immediate Testing)
+-- =========================================================================
+INSERT INTO schools (school_id, name, school_level, city, state) VALUES 
+(1, 'Oak Creek Middle School', 'middle', 'Los Angeles', 'CA');
+
+INSERT INTO teachers (school_id, first_name, last_name, department, grade_level, bio) VALUES 
+(1, 'Sarah', 'Connor', 'Science', '7-8', '7th and 8th Grade Physical & Life Sciences'),
+(1, 'David', 'Miller', 'Mathematics', '6-7', 'Middle School Pre-Algebra and Algebra 1');
+
+INSERT INTO tags (tag_name) VALUES 
+('Gives Good Feedback'),
+('Tough Grader'),
+('Lots of Homework'),
+('Inspirational'),
+('Fun Projects'),
+('Clear Grading Criteria');
