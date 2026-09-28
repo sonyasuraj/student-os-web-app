@@ -8,6 +8,7 @@ import os
 import secrets
 from flask import Flask, jsonify, render_template, request, session
 import db_gateway
+import review
 
 # Configure paths to the website folder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -168,7 +169,11 @@ def api_submit_review(teacher_id):
 
     client_hash = get_client_hash()
 
-    success, review_id, error = db_gateway.add_review(
+#
+# Call reviews.py and pass the inout values from the request
+# Comment all input functions in review.py as they were temporary and pass the values sent from dispatcher.py
+#
+    success, review_id, error = review.add_review(
         teacher_id=teacher_id,
         rating_overall=rating_overall,
         rating_difficulty=rating_difficulty,

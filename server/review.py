@@ -34,25 +34,27 @@ def main():
     #    Make a function for each input (course name, rating, review text, grade) you are reading from terminal and move your code mockup_review_system.py to these functions
     #    In the end when everything is fully tested, create a common input utility to replace the repeated while-loops
     #    
-        reviewtext = input_reviewtext()
-        print("here is what we got: " + reviewtext)
-        rating = input_rating()
-        print("here is what we got: " + str(rating))
-        teachercourse = input_course_name()
-        print("here is what we got: " + teachercourse)
-        lettergrade = input_letter_grade()
-        print("here is what we got: " + lettergrade)
-        time_of_review= datetime.now()
+       # reviewtext = input_reviewtext()
+        #print("here is what we got: " + reviewtext)
+        #rating = input_rating()
+       # print("here is what we got: " + str(rating))
+        #teachercourse = input_course_name()
+       # print("here is what we got: " + teachercourse)
+        #lettergrade = input_letter_grade()
+       # print("here is what we got: " + lettergrade)
+        #time_of_review= datetime.now()
+        #these were created before front end was made for testing
     # 3. Call the add_review function
     #    Look at what input you need to pass to the function and if you have everything
     #    What is mandatory vs what is optional
     #    Print the values right before saving
-        return add_review(4,rating,1,5,reviewtext,"anonstudent001",teachercourse,"student",7,4)
+        #return add_review(4,rating,1,5,reviewtext,"anonstudent001",teachercourse,"student",7,"da best")
     # 4. After saving, open the database and see if the review is saved
     #    
 
-pass
+    pass
 
+#To be deleted
 def input_reviewtext():
 
     correct_answer=False            
@@ -67,7 +69,7 @@ def input_reviewtext():
             else: 
                 correct_answer=False
     return review_text
-
+# To be deleted
 def input_rating():
     correct_answer=False            
     rating=int(input("What is your rating of this teacher out of five? > ").strip())
@@ -82,6 +84,8 @@ def input_rating():
                 correct_answer=False
     return rating
 
+
+# To be deleted
 def input_course_name():
     correct_answer=False
     teacher_course= input("What is your teachers course name (M for math, E for english, S for science, H for history, PE for physical education, O for other)> ").strip().lower()
@@ -96,6 +100,7 @@ def input_course_name():
                 correct_answer=False
     return teacher_course
 
+# To be deleted
 def input_letter_grade():
     correct_answer=False            
     user_letter_grade= input ("What grade did you get/have in this teacher's class?(Ex: A,B,C,D,F. NO + or -) > ").strip().lower()
