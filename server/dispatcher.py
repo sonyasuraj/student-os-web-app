@@ -173,7 +173,7 @@ def api_submit_review(teacher_id):
 # Call reviews.py and pass the inout values from the request
 # Comment all input functions in review.py as they were temporary and pass the values sent from dispatcher.py
 #
-    success, review_id, error = review.add_review(
+    success, review_id, error = review.save_review(
         teacher_id=teacher_id,
         rating_overall=rating_overall,
         rating_difficulty=rating_difficulty,
@@ -186,6 +186,7 @@ def api_submit_review(teacher_id):
         tag_ids=tag_ids
     )
 
+    print ("Final response from server layer. response variables: " + success + ", " + str(review_id) + ", " + str(error))
     if not success:
         return jsonify({"success": False, "error": error}), 400
 
