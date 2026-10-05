@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | RateMyTeacher</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fc;
+            color: #222;
+        }
+
+        nav {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            margin-left: 25px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #4f46e5;
+        }
+
+        main {
+            width: 90%;
+            max-width: 900px;
+            margin: 60px auto;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 18px;
+            padding: 45px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 38px;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .add-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .add-button:hover {
+            background: #4338ca;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px;
+            text-align: center;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            color: #777;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                padding: 0 20px;
+            }
+
+            nav div:last-child {
+                display: none;
+            }
+
+            main {
+                width: 94%;
+                margin-top: 30px;
+            }
+
+            .about-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            Rate<span>MyTeacher</span>
+        </div>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/">Teachers</a>
+            <a href="/about">About</a>
+            <a href="/add-teacher">Add a Teacher</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="about-card">
+            <h1>About RateMyTeacher</h1>
+
+            <p>
+                Welcome to RateMyTeacher! This program enables you to get
+                information about teachers such as how they grade, their
+                personality, and the difficulty of each class.
+            </p>
+
+            <p>
+                Instead of the teachers telling you, students can
+                anonymously write reviews about their experience in a class,
+                including the grade they received. This helps students learn
+                more about a class and hear from other students who have
+                experienced it.
+            </p>
+
+            <p>
+                You can search for a teacher and use information such as
+                their state, district, school, grade, and subject to find
+                the teacher you're looking for.
+            </p>
+
+            <p>
+                If a teacher isn't listed yet, you can request that they be
+                added to RateMyTeacher.
+            </p>
+
+            <a class="add-button" href="/add-teacher">
+                Add a Teacher
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 RateMyTeacher</p>
+    </footer>
+
+</body>
+</html>

@@ -1,7 +1,3 @@
-
-
-
-
 from flask import Flask, jsonify, request, send_from_directory, session
 import sqlite3
 import os
@@ -56,6 +52,18 @@ def teacher_page():
     return send_from_directory(
         os.path.dirname(__file__),
         "teacher.html"
+    )
+
+
+# ============================================================
+# ABOUT PAGE
+# ============================================================
+
+@app.route("/about")
+def about():
+    return send_from_directory(
+        os.path.dirname(__file__),
+        "about.html"
     )
 
 

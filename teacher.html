@@ -3,6 +3,10 @@
 
 
 
+
+
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -263,20 +267,18 @@
         background: #4338ca;
     }
 
-    .review-form { display:none; margin-top:25px; padding:25px; background:#f7f8fc; border-radius:14px; border:1px solid #e5e7eb; }
-    .review-form h3 { margin-top:0; margin-bottom:8px; }
-    .review-form-note { color:#666; font-size:14px; margin-bottom:20px; }
-    .form-group { margin-bottom:18px; }
-    .form-group label { display:block; font-weight:bold; margin-bottom:7px; }
-    .form-group input, .form-group select, .form-group textarea { width:100%; padding:11px 12px; border:1px solid #d1d5db; border-radius:8px; font-family:inherit; font-size:15px; background:white; }
-    .form-group textarea { min-height:120px; resize:vertical; }
-    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-    .cancel-button { margin-left:8px; padding:12px 20px; background:white; color:#444; border:1px solid #d1d5db; border-radius:9px; font-weight:bold; cursor:pointer; }
-    .cancel-button:hover { background:#f3f4f6; }
-    .form-status { margin-top:15px; font-size:14px; font-weight:bold; }
-    .form-status.error { color:#b91c1c; }
-    .form-status.success { color:#166534; }
 
+
+    .review-form{margin-top:25px;padding:25px;background:#f7f8fc;border:1px solid #e5e7eb;border-radius:14px}
+    .review-form h3{margin-top:0}
+    .form-group{margin-bottom:16px}
+    .form-group label{display:block;font-weight:bold;margin-bottom:7px;color:#333}
+    .review-form input,.review-form select,.review-form textarea{width:100%;padding:11px 12px;border:1px solid #d1d5db;border-radius:8px;font:inherit;background:white}
+    .review-form textarea{min-height:120px;resize:vertical}
+    .review-form-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .cancel-button{background:#e5e7eb;color:#333}
+    .cancel-button:hover{background:#d1d5db}
+    .review-status{margin-top:12px;font-size:14px}
 
     /* =========================
        LOADING / ERROR
@@ -342,15 +344,6 @@
             padding: 25px;
         }
 
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-
-        .cancel-button {
-            margin-left: 0;
-            margin-top: 8px;
-        }
-
     }
 
 </style>
@@ -381,8 +374,12 @@
             Teachers
         </a>
 
-        <a href="#">
+        <a href="/about">
             About
+        </a>
+
+        <a href="/add-teacher">
+            Add a Teacher
         </a>
 
     </div>
@@ -570,78 +567,70 @@
 
 
         <button
-            id="writeReviewButton"
             class="review-button"
             onclick="writeReview()"
         >
             Write a Review
         </button>
 
-        <div id="reviewForm" class="review-form">
+        <form id="reviewForm" class="review-form" style="display:none;">
             <h3>Write an Anonymous Review</h3>
-            <p class="review-form-note">
-                Your review is submitted anonymously. Please keep your review respectful and focused on the class experience.
-            </p>
 
             <div class="form-group">
                 <label for="courseName">Course</label>
-                <input id="courseName" type="text" placeholder="Example: 8th Grade English">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="studentGrade">Your Grade Level</label>
-                    <select id="studentGrade">
-                        <option value="">Select</option>
-                        <option value="6">6th</option><option value="7">7th</option>
-                        <option value="8">8th</option><option value="9">9th</option>
-                        <option value="10">10th</option><option value="11">11th</option>
-                        <option value="12">12th</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="overallRating">Overall Rating</label>
-                    <select id="overallRating">
-                        <option value="">Select</option>
-                        <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
-                        <option value="3">3 - Average</option><option value="2">2 - Below Average</option>
-                        <option value="1">1 - Poor</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="difficultyRating">Difficulty</label>
-                    <select id="difficultyRating">
-                        <option value="">Select</option>
-                        <option value="1">1 - Very Easy</option><option value="2">2 - Easy</option>
-                        <option value="3">3 - Moderate</option><option value="4">4 - Difficult</option>
-                        <option value="5">5 - Very Difficult</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="helpfulnessRating">Helpfulness</label>
-                    <select id="helpfulnessRating">
-                        <option value="">Select</option>
-                        <option value="5">5 - Very Helpful</option><option value="4">4 - Helpful</option>
-                        <option value="3">3 - Somewhat Helpful</option><option value="2">2 - Not Very Helpful</option>
-                        <option value="1">1 - Not Helpful</option>
-                    </select>
-                </div>
+                <input id="courseName" type="text" placeholder="Example: English">
             </div>
 
             <div class="form-group">
-                <label for="reviewText">Your Review</label>
-                <textarea id="reviewText" minlength="5" placeholder="Share your experience with this teacher and class..."></textarea>
+                <label for="studentGrade">Your Grade Level</label>
+                <select id="studentGrade">
+                    <option value="">Select your grade</option>
+                    <option value="6">6th</option><option value="7">7th</option>
+                    <option value="8">8th</option><option value="9">9th</option>
+                    <option value="10">10th</option><option value="11">11th</option>
+                    <option value="12">12th</option>
+                </select>
             </div>
 
-            <button id="submitReviewButton" class="review-button" type="button" onclick="submitReview()">
-                Submit Review
-            </button>
-            <button class="cancel-button" type="button" onclick="cancelReview()">Cancel</button>
-            <div id="formStatus" class="form-status"></div>
-        </div>
+            <div class="form-group">
+                <label for="overallRating">Overall Rating</label>
+                <select id="overallRating" required>
+                    <option value="">Select a rating</option>
+                    <option value="1">1</option><option value="2">2</option>
+                    <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="difficultyRating">Difficulty</label>
+                <select id="difficultyRating" required>
+                    <option value="">Select a rating</option>
+                    <option value="1">1</option><option value="2">2</option>
+                    <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="helpfulnessRating">Helpfulness</label>
+                <select id="helpfulnessRating" required>
+                    <option value="">Select a rating</option>
+                    <option value="1">1</option><option value="2">2</option>
+                    <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="reviewText">Review</label>
+                <textarea id="reviewText" minlength="5" required
+                    placeholder="Keep your review respectful and focused on your class experience."></textarea>
+            </div>
+
+            <div class="review-form-actions">
+                <button type="submit" class="review-button">Submit Review</button>
+                <button type="button" class="review-button cancel-button" onclick="closeReviewForm()">Cancel</button>
+            </div>
+            <div id="reviewStatus" class="review-status"></div>
+        </form>
 
     </section>
 
@@ -707,6 +696,7 @@
     ========================= */
 
     async function loadTeacher() {
+
         if (!teacherID) {
             showError();
             return;
@@ -717,38 +707,26 @@
                 `/api/teachers/${encodeURIComponent(teacherID)}`
             );
 
-            if (!response.ok) throw new Error("Teacher not found");
+            if (!response.ok) {
+                throw new Error("Teacher not found");
+            }
 
             const result = await response.json();
+
+            // Supports both backend response formats:
+            // 1. { success: true, teacher: {...} }
+            // 2. { teacher_id: ..., first_name: ..., ... }
             const teacher = result.teacher || result;
 
             displayTeacher(teacher);
             await loadReviews();
-        } catch (error) {
-            console.error("Error loading teacher:", error);
+
+        } catch (loadError) {
+            console.error("Error loading teacher:", loadError);
             showError();
         }
+
     }
-
-    async function loadReviews() {
-        try {
-            const response = await fetch(
-                `/api/teachers/${encodeURIComponent(teacherID)}/reviews`
-            );
-
-            if (!response.ok) throw new Error("Could not load reviews");
-
-            const result = await response.json();
-            const reviews = result.reviews || result.teacher?.reviews || [];
-
-            displayReviews(reviews);
-            document.getElementById("reviewCount").textContent = reviews.length;
-        } catch (error) {
-            console.error("Error loading reviews:", error);
-            displayReviews([]);
-        }
-    }
-
 
 
     /* =========================
@@ -758,174 +736,133 @@
     function displayTeacher(teacher) {
 
         loading.style.display = "none";
-
         teacherProfile.style.display = "block";
-
         reviewsSection.style.display = "block";
 
+        const firstName = teacher.first_name || "";
+        const lastName = teacher.last_name || "";
+        const fullName = `${firstName} ${lastName}`.trim();
 
-        /* NAME */
+        document.getElementById("teacherName").textContent =
+            teacher.name || fullName || "Teacher";
 
-        const firstName =
-            teacher.first_name || "";
+        document.getElementById("schoolName").textContent =
+            teacher.school_name || "School not listed";
 
-        const lastName =
-            teacher.last_name || "";
-
-        const fullName =
-            `${firstName} ${lastName}`.trim();
-
-
-        document.getElementById(
-            "teacherName"
-        ).textContent =
-            teacher.name ||
-            fullName ||
-            "Teacher";
-
-
-
-        /* SCHOOL */
-
-        document.getElementById(
-            "schoolName"
-        ).textContent =
-            teacher.school_name ||
-            "School not listed";
-
-
-
-        /* SUBJECT */
-
-        document.getElementById(
-            "subjectTag"
-        ).textContent =
+        document.getElementById("subjectTag").textContent =
             teacher.department ||
             teacher.subject ||
             "Subject not listed";
 
-
-
-        /* GRADE */
-
-        document.getElementById(
-            "gradeTag"
-        ).textContent =
+        document.getElementById("gradeTag").textContent =
             teacher.grade_level ||
             "Grade not listed";
 
-
-
-        /* BIO */
-
-        document.getElementById(
-            "teacherBio"
-        ).textContent =
+        document.getElementById("teacherBio").textContent =
             teacher.bio ||
             "No biography has been added yet.";
 
-
-
-        /* RATING */
-
-        const rating =
-            Number(
-                teacher.overall_rating ??
-                teacher.rating_overall ??
-                0
-            );
-
+        // Rating fields supported by both the user's backend
+        // and the teammate's review backend.
+        const rating = Number(
+            teacher.avg_overall ??
+            teacher.overall_rating ??
+            teacher.rating_overall ??
+            teacher.rating ??
+            0
+        );
 
         if (rating > 0) {
-
-            document.getElementById(
-                "ratingNumber"
-            ).textContent =
+            document.getElementById("ratingNumber").textContent =
                 rating.toFixed(1);
 
-
-            document.getElementById(
-                "stars"
-            ).textContent =
+            document.getElementById("stars").textContent =
                 createStars(rating);
-
-        }
-
-        else {
-
-            document.getElementById(
-                "ratingNumber"
-            ).textContent =
+        } else {
+            document.getElementById("ratingNumber").textContent =
                 "No ratings yet";
 
-            document.getElementById(
-                "stars"
-            ).textContent =
+            document.getElementById("stars").textContent =
                 "☆☆☆☆☆";
-
         }
 
-
-
-        /* DIFFICULTY */
-
         const difficulty =
+            teacher.avg_difficulty ??
             teacher.average_difficulty ??
             teacher.difficulty ??
             teacher.rating_difficulty;
 
-
-        document.getElementById(
-            "difficulty"
-        ).textContent =
-            difficulty
-            ? Number(difficulty).toFixed(1)
-            : "—";
-
-
-
-        /* HELPFULNESS */
+        document.getElementById("difficulty").textContent =
+            difficulty != null && difficulty !== ""
+                ? Number(difficulty).toFixed(1)
+                : "—";
 
         const helpfulness =
+            teacher.avg_helpfulness ??
             teacher.average_helpfulness ??
             teacher.helpfulness ??
             teacher.rating_helpfulness;
 
+        document.getElementById("helpfulness").textContent =
+            helpfulness != null && helpfulness !== ""
+                ? Number(helpfulness).toFixed(1)
+                : "—";
 
-        document.getElementById(
-            "helpfulness"
-        ).textContent =
-            helpfulness
-            ? Number(helpfulness).toFixed(1)
-            : "—";
-
-
-
-        /* REVIEW COUNT */
-
-        const reviewCount =
+        const reviewCount = Number(
+            teacher.total_reviews ??
             teacher.review_count ??
             teacher.reviews_count ??
-            (Array.isArray(teacher.reviews)
-                ? teacher.reviews.length
-                : 0);
-
-
-        document.getElementById(
-            "reviewCount"
-        ).textContent =
-            reviewCount;
-
-
-
-        /* REVIEWS */
-
-        displayReviews(
-            teacher.reviews || []
+            (Array.isArray(teacher.reviews) ? teacher.reviews.length : 0)
         );
+
+        document.getElementById("reviewCount").textContent =
+            reviewCount === 1 ? "1 Rating" : `${reviewCount} Ratings`;
 
     }
 
+
+    /* =========================
+       LOAD REVIEWS THROUGH API
+    ========================= */
+
+    async function loadReviews() {
+
+        try {
+            const response = await fetch(
+                `/api/teachers/${encodeURIComponent(teacherID)}/reviews`
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not load reviews");
+            }
+
+            const result = await response.json();
+
+            const reviews = result.reviews || [];
+
+            displayReviews(reviews);
+
+            // Prefer the backend's count, but fall back to the
+            // number of reviews actually returned.
+            const count = Number(
+                result.count ??
+                result.total_reviews ??
+                reviews.length
+            );
+
+            document.getElementById("reviewCount").textContent =
+                count === 1 ? "1 Rating" : `${count} Ratings`;
+
+        } catch (reviewError) {
+            console.error("Error loading reviews:", reviewError);
+
+            displayReviews([]);
+
+            // Do not overwrite an already-known teacher rating count
+            // with 0 just because the reviews endpoint failed.
+        }
+
+    }
 
 
     /* =========================
@@ -1083,66 +1020,50 @@
        WRITE REVIEW
     ========================= */
 
+
     function writeReview() {
         const form = document.getElementById("reviewForm");
         form.style.display = "block";
-        document.getElementById("writeReviewButton").style.display = "none";
-        form.scrollIntoView({ behavior: "smooth", block: "start" });
+        form.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
-    function cancelReview() {
+    function closeReviewForm() {
         document.getElementById("reviewForm").style.display = "none";
-        document.getElementById("writeReviewButton").style.display = "inline-block";
-        clearFormStatus();
+        document.getElementById("reviewStatus").textContent = "";
     }
 
-    function clearFormStatus() {
-        const status = document.getElementById("formStatus");
-        status.textContent = "";
-        status.className = "form-status";
-    }
+    document.getElementById("reviewForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
 
-    async function submitReview() {
-        clearFormStatus();
-
-        const courseName = document.getElementById("courseName").value.trim();
-        const studentGrade = document.getElementById("studentGrade").value;
-        const overallRating = document.getElementById("overallRating").value;
-        const difficultyRating = document.getElementById("difficultyRating").value;
-        const helpfulnessRating = document.getElementById("helpfulnessRating").value;
+        const status = document.getElementById("reviewStatus");
         const reviewText = document.getElementById("reviewText").value.trim();
-        const status = document.getElementById("formStatus");
-        const submitButton = document.getElementById("submitReviewButton");
+        const overall = document.getElementById("overallRating").value;
+        const difficulty = document.getElementById("difficultyRating").value;
+        const helpfulness = document.getElementById("helpfulnessRating").value;
+        const course = document.getElementById("courseName").value.trim();
+        const grade = document.getElementById("studentGrade").value;
 
-        if (!overallRating || !difficultyRating || !helpfulnessRating) {
-            status.textContent = "Please choose all three ratings.";
-            status.className = "form-status error";
+        if (!overall || !difficulty || !helpfulness || reviewText.length < 5) {
+            status.textContent = "Please complete the required fields and write at least 5 characters.";
             return;
         }
 
-        if (reviewText.length < 5) {
-            status.textContent = "Please write at least a few words for your review.";
-            status.className = "form-status error";
-            return;
-        }
-
-        submitButton.disabled = true;
-        submitButton.textContent = "Submitting...";
+        status.textContent = "Submitting your anonymous review...";
 
         try {
             const response = await fetch(
                 `/api/teachers/${encodeURIComponent(teacherID)}/reviews`,
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({
-                        rating_overall: Number(overallRating),
-                        rating_difficulty: Number(difficultyRating),
-                        rating_helpfulness: Number(helpfulnessRating),
+                        rating_overall: Number(overall),
+                        rating_difficulty: Number(difficulty),
+                        rating_helpfulness: Number(helpfulness),
                         review_text: reviewText,
-                        course_name: courseName || null,
+                        course_name: course || null,
                         reviewer_role: "student",
-                        student_grade_level: studentGrade ? Number(studentGrade) : null,
+                        student_grade_level: grade ? Number(grade) : null,
                         tag_ids: []
                     })
                 }
@@ -1154,33 +1075,16 @@
                 throw new Error(result.error || "The review could not be submitted.");
             }
 
-            status.textContent = "Thank you! Your anonymous review has been posted.";
-            status.className = "form-status success";
-
-            document.getElementById("courseName").value = "";
-            document.getElementById("studentGrade").value = "";
-            document.getElementById("overallRating").value = "";
-            document.getElementById("difficultyRating").value = "";
-            document.getElementById("helpfulnessRating").value = "";
-            document.getElementById("reviewText").value = "";
-
+            status.textContent = "Review submitted successfully!";
+            document.getElementById("reviewForm").reset();
             await loadTeacher();
 
-            setTimeout(function() {
-                document.getElementById("reviewForm").style.display = "none";
-                document.getElementById("writeReviewButton").style.display = "inline-block";
-                clearFormStatus();
-            }, 800);
-
-        } catch (error) {
-            console.error("Error submitting review:", error);
-            status.textContent = error.message || "Something went wrong while submitting the review.";
-            status.className = "form-status error";
-        } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = "Submit Review";
+            setTimeout(closeReviewForm, 1200);
+        } catch (submitError) {
+            console.error("Review submission error:", submitError);
+            status.textContent = submitError.message || "Something went wrong.";
         }
-    }
+    });
 
 
 

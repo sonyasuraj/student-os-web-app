@@ -916,8 +916,12 @@
                 Teachers
             </a>
 
-            <a href="#about">
+            <a href="/about">
                 About
+            </a>
+
+            <a href="/add-teacher">
+                Add a Teacher
             </a>
 
         </div>
@@ -1196,7 +1200,7 @@
          FOOTER
     ========================= -->
 
-    <footer id="about">
+    <footer>
 
         <p>
             © 2026 RateMyTeacher
@@ -2208,11 +2212,7 @@
         addTeacherButton.addEventListener(
             "click",
             function() {
-
-                alert(
-                    "The Add Teacher form will be connected here next."
-                );
-
+                window.location.href = "/add-teacher";
             }
         );
 
