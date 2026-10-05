@@ -1,10 +1,15 @@
 
 
-from flask import Flask, jsonify, request, send_from_directory
+
+
+from flask import Flask, jsonify, request, send_from_directory, session
 import sqlite3
 import os
+import hashlib
+import secrets
 
 app = Flask(__name__)
+app.secret_key = "rate-my-teacher-anonymous-development-key"
 
 # ============================================================
 # DATABASE
@@ -19,7 +24,15 @@ DATABASE = os.path.join(
 def get_db():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
+    db.execute("PRAGMA foreign_keys = ON;")
     return db
+
+
+def get_client_hash():
+    """Create a random anonymous browser token and hash it for review rate-limiting."""
+    if "anonymous_user_token" not in session:
+        session["anonymous_user_token"] = secrets.token_hex(16)
+    return hashlib.sha256(session["anonymous_user_token"].encode()).hexdigest()
 
 
 # ============================================================
@@ -499,7 +512,6 @@ def search():
 
     else:
 
-<<<<<<< HEAD
         query += """
             ORDER BY
                 t.last_name,
@@ -575,14 +587,167 @@ def one_teacher(teacher_id):
             t.teacher_id
     """, (teacher_id,)).fetchone()
 
-    db.close()
-
     if row is None:
+        db.close()
         return jsonify({
             "error": "Teacher not found"
         }), 404
 
-    return jsonify(dict(row))
+    teacher = dict(row)
+
+    # Get this teacher's approved reviews so teacher.html can display them.
+    reviews = db.execute("""
+        SELECT
+            r.review_id,
+            r.teacher_id,
+            r.course_name,
+            r.reviewer_role,
+            r.student_grade_level,
+            r.rating_overall,
+            r.rating_difficulty,
+            r.rating_helpfulness,
+            r.review_text,
+            r.created_at
+        FROM reviews r
+        WHERE r.teacher_id = ?
+          AND r.status = 'approved'
+        ORDER BY r.created_at DESC
+    """, (teacher_id,)).fetchall()
+
+    teacher["reviews"] = [dict(review) for review in reviews]
+
+    db.close()
+
+    return jsonify(teacher)
+
+
+# ============================================================
+# REVIEWS
+# ============================================================
+
+@app.route("/api/teachers/<int:teacher_id>/reviews", methods=["GET"])
+def get_reviews(teacher_id):
+    """Return all approved reviews for one teacher."""
+    db = get_db()
+
+    teacher_exists = db.execute(
+        "SELECT teacher_id FROM teachers WHERE teacher_id = ?",
+        (teacher_id,)
+    ).fetchone()
+
+    if teacher_exists is None:
+        db.close()
+        return jsonify({"success": False, "error": "Teacher not found"}), 404
+
+    rows = db.execute("""
+        SELECT
+            review_id,
+            teacher_id,
+            course_name,
+            reviewer_role,
+            student_grade_level,
+            rating_overall,
+            rating_difficulty,
+            rating_helpfulness,
+            review_text,
+            created_at
+        FROM reviews
+        WHERE teacher_id = ?
+          AND status = 'approved'
+        ORDER BY created_at DESC
+    """, (teacher_id,)).fetchall()
+
+    db.close()
+
+    reviews = [dict(row) for row in rows]
+    return jsonify({
+        "success": True,
+        "teacher_id": teacher_id,
+        "count": len(reviews),
+        "reviews": reviews
+    })
+
+
+@app.route("/api/teachers/<int:teacher_id>/reviews", methods=["POST"])
+def submit_review(teacher_id):
+    """Save an anonymous review using the same review fields as the team's review backend."""
+    data = request.get_json(silent=True) if request.is_json else request.form
+    data = data or {}
+
+    rating_overall = data.get("rating_overall")
+    rating_difficulty = data.get("rating_difficulty")
+    rating_helpfulness = data.get("rating_helpfulness")
+    review_text = data.get("review_text")
+    course_name = data.get("course_name")
+    reviewer_role = data.get("reviewer_role", "student")
+    student_grade_level = data.get("student_grade_level")
+
+    try:
+        rating_overall = int(rating_overall)
+        rating_difficulty = int(rating_difficulty)
+        rating_helpfulness = int(rating_helpfulness)
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "error": "Ratings must be numbers from 1 to 5."}), 400
+
+    if not all(1 <= value <= 5 for value in (rating_overall, rating_difficulty, rating_helpfulness)):
+        return jsonify({"success": False, "error": "Ratings must be between 1 and 5."}), 400
+
+    if not review_text or len(str(review_text).strip()) < 5:
+        return jsonify({"success": False, "error": "Please write at least a few words for your review."}), 400
+
+    db = get_db()
+
+    teacher_exists = db.execute(
+        "SELECT teacher_id FROM teachers WHERE teacher_id = ?",
+        (teacher_id,)
+    ).fetchone()
+
+    if teacher_exists is None:
+        db.close()
+        return jsonify({"success": False, "error": "Teacher not found"}), 404
+
+    client_hash = get_client_hash()
+
+    try:
+        db.execute("""
+            INSERT INTO reviews (
+                teacher_id, course_name, reviewer_role, student_grade_level,
+                rating_overall, rating_difficulty, rating_helpfulness,
+                review_text, status, client_fingerprint_hash
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'approved', ?)
+        """, (
+            teacher_id,
+            str(course_name).strip() if course_name else None,
+            reviewer_role or "student",
+            int(student_grade_level) if student_grade_level else None,
+            rating_overall,
+            rating_difficulty,
+            rating_helpfulness,
+            str(review_text).strip(),
+            client_hash
+        ))
+
+        review_id = db.execute("SELECT last_insert_rowid()").fetchone()[0]
+        db.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Thank you! Your anonymous review has been posted.",
+            "review_id": review_id
+        }), 201
+
+    except sqlite3.IntegrityError:
+        db.rollback()
+        return jsonify({
+            "success": False,
+            "error": "You have already submitted a review for this teacher and course."
+        }), 400
+    except Exception as e:
+        db.rollback()
+        return jsonify({"success": False, "error": f"Failed to save review: {str(e)}"}), 500
+    finally:
+        db.close()
 
 
 # ============================================================
@@ -627,6 +792,3 @@ if __name__ == "__main__":
         host="127.0.0.1",
         port=5000
     )
-=======
-        st.warning("Please enter an assignment name and subject.")
->>>>>>> 83afd469fb6592a0fca7108aaff122faada6453f
