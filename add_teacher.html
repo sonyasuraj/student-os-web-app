@@ -1,10 +1,13 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rate My Teacher — Add Teacher Profile</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
   <!-- Navigation Bar -->
@@ -30,13 +33,8 @@
         <div class="form-group">
           <label for="school_id">Select School: *</label>
           <select id="school_id" required>
-            <option value="">-- Choose a School --</option>
-            {% for school in schools %}
-              <option value="{{ school.school_id }}">
-                {{ school.name }} ({{ school.city }}, {{ school.state }})
-              </option>
-            {% endfor %}
-          </select>
+              <option value="">-- Choose a School --</option>
+            </select>
         </div>
 
         <!-- Name Inputs -->
@@ -92,6 +90,37 @@
     <p>Rate My Teacher • Congressional App Challenge • 100% Anonymous & COPPA Compliant</p>
   </footer>
 
-  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+
+  <script>
+    async function loadSchools() {
+      const schoolSelect = document.getElementById("school_id");
+
+      try {
+        const response = await fetch("/api/schools");
+        const schools = await response.json();
+
+        schools.forEach(function(school) {
+          const option = document.createElement("option");
+
+          option.value = school.school_id;
+          option.textContent =
+            school.name +
+            " (" +
+            (school.city || "") +
+            ", " +
+            (school.state || "") +
+            ")";
+
+          schoolSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Could not load schools:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadSchools);
+  </script>
+
+  <script src="/static/app.js" defer></script>
 </body>
 </html>

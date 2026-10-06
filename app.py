@@ -1,3 +1,6 @@
+
+
+
 from flask import Flask, jsonify, request, send_from_directory, session
 import sqlite3
 import os
@@ -55,16 +58,55 @@ def teacher_page():
     )
 
 
+
+# ============================================================
+# ADD TEACHER PAGE
+# ============================================================
+
+@app.route("/add-teacher")
+def add_teacher_page():
+
+    return send_from_directory(
+        os.path.dirname(__file__),
+        "add_teacher.html"
+    )
+
+
 # ============================================================
 # ABOUT PAGE
 # ============================================================
 
 @app.route("/about")
-def about():
+def about_page():
+
     return send_from_directory(
         os.path.dirname(__file__),
         "about.html"
     )
+
+
+# ============================================================
+# STATIC FILES
+# ============================================================
+
+@app.route("/static/<path:filename>")
+def static_files(filename):
+
+    return send_from_directory(
+        os.path.dirname(__file__),
+        filename
+    )
+
+
+
+# ============================================================
+# TEACHER PROFILE LINK
+# ============================================================
+
+@app.route("/teacher/<int:teacher_id>")
+def teacher_profile_link(teacher_id):
+
+    return f'<script>window.location.href="/teacher.html?teacher={teacher_id}";</script>'
 
 
 # ============================================================
@@ -216,6 +258,99 @@ def school_options():
         dict(row)
         for row in rows
     ])
+
+
+
+# ============================================================
+# ADD A TEACHER
+# ============================================================
+
+@app.route("/api/teachers", methods=["POST"])
+def add_teacher():
+
+    data = request.get_json(silent=True) or request.form
+
+    school_id = str(data.get("school_id", "")).strip()
+    first_name = str(data.get("first_name", "")).strip()
+    last_name = str(data.get("last_name", "")).strip()
+    department = str(data.get("department", "")).strip()
+    grade_level = str(data.get("grade_level", "")).strip()
+    bio = str(data.get("bio", "")).strip()
+
+    if not school_id or not first_name or not last_name or not department or not grade_level:
+        return jsonify({
+            "success": False,
+            "error": "Please fill out all required fields."
+        }), 400
+
+    db = get_db()
+
+    try:
+        school = db.execute(
+            "SELECT school_id FROM schools WHERE school_id = ?",
+            (school_id,)
+        ).fetchone()
+
+        if school is None:
+            return jsonify({
+                "success": False,
+                "error": "Selected school was not found."
+            }), 400
+
+        existing = db.execute("""
+            SELECT teacher_id
+            FROM teachers
+            WHERE school_id = ?
+              AND LOWER(first_name) = LOWER(?)
+              AND LOWER(last_name) = LOWER(?)
+        """, (
+            school_id,
+            first_name,
+            last_name
+        )).fetchone()
+
+        if existing:
+            return jsonify({
+                "success": False,
+                "error": "That teacher is already listed at this school."
+            }), 409
+
+        cursor = db.execute("""
+            INSERT INTO teachers (
+                school_id,
+                first_name,
+                last_name,
+                department,
+                grade_level,
+                bio
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            school_id,
+            first_name,
+            last_name,
+            department,
+            grade_level,
+            bio
+        ))
+
+        teacher_id = cursor.lastrowid
+        db.commit()
+
+        return jsonify({
+            "success": True,
+            "teacher_id": teacher_id
+        }), 201
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({
+            "success": False,
+            "error": f"Failed to add teacher: {str(e)}"
+        }), 500
+
+    finally:
+        db.close()
 
 
 # ============================================================
