@@ -29,7 +29,7 @@ Each check returns verdict unless system error.
 #                                          RETRY:
 # ---------------------------------------------------------------------------
 
-import constants
+import server.constants
 
 
 def check_review(review_text):
@@ -38,21 +38,21 @@ def check_review(review_text):
     check_status,error_message=check_simple(review_text)
     if check_status==False:
         print (error_message)
-        return constants.DECLINE, error_message
+        return server.constants.DECLINE, error_message
     
     check_status, error_message = check_blocked_words(review_text)
     if check_status==False:
         print (error_message)
-        return constants.DECLINE, error_message  
+        return server.constants.DECLINE, error_message  
     
     check_status, error_message = check_with_ai(review_text)
     if check_status==False:
         print (error_message)
-        return constants.DECLINE, error_message  
+        return server.constants.DECLINE, error_message  
 
     # handle system error and retur RETRY
     
-    return constants.ALLOW, None
+    return server.constants.ALLOW, None
 
 
 
@@ -103,7 +103,7 @@ def check_with_ai(text):
 
 def make_verdict(decision, reason, **extras):
     """The shape every check returns. reason is read by a 12-year-old."""
-    if decision not in (ALLOW, DECLINE, CONCERN, RETRY):
+    if decision not in (server.constants.ALLOW, server.constants.DECLINE, server.constants.CONCERN, server.constants.RETRY):
         raise ValueError(f"not a real decision: {decision!r}")
     return {"decision": decision, "reason": reason, **extras}
 

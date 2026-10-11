@@ -8,7 +8,7 @@ import sqlite3
 
 # Locate app_database.db in the database/ directory relative to this file
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, "database", "app_database.db")
+DB_PATH = os.path.join(BASE_DIR, "rmt.db")
 
 
 def get_db():

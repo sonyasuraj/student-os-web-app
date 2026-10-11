@@ -6,6 +6,7 @@ import sqlite3
 import os
 import hashlib
 import secrets
+import server.review
 
 app = Flask(__name__)
 app.secret_key = "rate-my-teacher-anonymous-development-key"
@@ -852,27 +853,22 @@ def submit_review(teacher_id):
     client_hash = get_client_hash()
 
     try:
-        db.execute("""
-            INSERT INTO reviews (
-                teacher_id, course_name, reviewer_role, student_grade_level,
-                rating_overall, rating_difficulty, rating_helpfulness,
-                review_text, status, client_fingerprint_hash
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'approved', ?)
-        """, (
+        success, review_id, error = server.review.save_review(
             teacher_id,
-            str(course_name).strip() if course_name else None,
-            reviewer_role or "student",
-            int(student_grade_level) if student_grade_level else None,
             rating_overall,
             rating_difficulty,
             rating_helpfulness,
-            str(review_text).strip(),
-            client_hash
-        ))
-
-        review_id = db.execute("SELECT last_insert_rowid()").fetchone()[0]
-        db.commit()
+            review_text,
+            client_hash,
+            course_name,
+            reviewer_role,
+            student_grade_level,
+            None
+        )
+        
+        print ("Final response from server layer: " + success + ", " + str(review_id) + ", " + str(error))
+        if not success:
+            return jsonify({"success": False, "error": error}), 400
 
         return jsonify({
             "success": True,
@@ -880,18 +876,9 @@ def submit_review(teacher_id):
             "review_id": review_id
         }), 201
 
-    except sqlite3.IntegrityError:
-        db.rollback()
-        return jsonify({
-            "success": False,
-            "error": "You have already submitted a review for this teacher and course."
-        }), 400
     except Exception as e:
-        db.rollback()
         return jsonify({"success": False, "error": f"Failed to save review: {str(e)}"}), 500
-    finally:
-        db.close()
-
+    
 
 # ============================================================
 # TEST DATABASE

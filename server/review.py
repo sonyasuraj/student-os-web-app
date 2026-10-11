@@ -6,17 +6,16 @@
 #
 
 import secrets
-import db_gateway
-import dispatcher
-import constants
-from moderation import check_review
-from db_gateway import add_review
+import server.db_gateway
+import server.constants
+from server.moderation import check_review
+from server.db_gateway import add_review
 
 def save_review(teacher_id, rating_overall, rating_difficulty, rating_helpfulness,review_text, client_fingerprint_hash, course_name,reviewer_role, student_grade_level, tag_ids):
     review_status, error_message =check_review(review_text)
     print ("Review status from moderation step: " + review_status)
     
-    if review_status == constants.DECLINE or review_status == constants.RETRY: 
+    if review_status == server.constants.DECLINE or review_status == server.constants.RETRY: 
         return review_status, error_message
     
     success, review_id, error_message=add_review(
@@ -33,11 +32,10 @@ def save_review(teacher_id, rating_overall, rating_difficulty, rating_helpfulnes
     )
 
     if success == True:
-        review_status = constants.ALLOW
+        review_status = server.constants.ALLOW
     else:
-        review_status = constants.DECLINE
+        review_status = server.constants.DECLINE
 
     return review_status, review_id, error_message;
 
 
-tup="call moderation then if passed call db_gateway"
