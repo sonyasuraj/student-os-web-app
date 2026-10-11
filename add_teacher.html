@@ -4,123 +4,715 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rate My Teacher — Add Teacher Profile</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Your Teacher | Rate My Teacher</title>
+
+    <style>
+        /* =========================
+           GENERAL PAGE
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6fa;
+            color: #111827;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 18px 40px;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            text-decoration: none;
+            color: #111827;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .back-button {
+            text-decoration: none;
+            color: #4f46e5;
+
+            border: 1px solid #4f46e5;
+            border-radius: 10px;
+
+            padding: 10px 16px;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            background: #4f46e5;
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .page {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px;
+
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 0;
+
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        /* =========================
+           FORM CARD
+        ========================= */
+
+        .form-card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.07);
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+
+            background: white;
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+
+            color: #111827;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #4f46e5;
+
+            box-shadow:
+                0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .submit-button {
+            width: 100%;
+
+            border: none;
+            border-radius: 10px;
+
+            padding: 15px;
+
+            background: #4f46e5;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #4338ca;
+        }
+
+        .submit-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 14px 16px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            display: block;
+
+            background: #ecfdf5;
+            color: #047857;
+
+            border: 1px solid #a7f3d0;
+        }
+
+        .status.error {
+            display: block;
+
+            background: #fef2f2;
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+        }
+
+        /* =========================
+           INFO BOX
+        ========================= */
+
+        .info-box {
+            margin-top: 25px;
+
+            padding: 18px;
+
+            background: #f5f3ff;
+
+            border-radius: 12px;
+
+            color: #4b5563;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        .info-box strong {
+            color: #4f46e5;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-container {
+                gap: 15px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .page {
+                margin-top: 30px;
+            }
+
+            .header h1 {
+                font-size: 29px;
+            }
+
+            .form-card {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <!-- Navigation Bar -->
-  <header class="navbar">
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<header class="navbar">
+
     <div class="nav-container">
-      <a href="/" class="btn btn-outline">⬅ Back to Teachers</a>
-      <a href="/" class="logo">🏫 Rate My Teacher</a>
-      <div></div>
+
+        <a href="/" class="back-button">
+            ← Back to Teachers
+        </a>
+
+        <a href="/" class="logo">
+            🏫 Rate My Teacher
+        </a>
+
+        <div></div>
+
     </div>
-  </header>
 
-  <main class="container">
-    <section class="form-card add-teacher-card">
-      <div class="form-header">
-        <h1>➕ Submit a New Teacher Profile</h1>
-        <p>Help classmates find teachers and share constructive feedback!</p>
-      </div>
+</header>
 
-      <div id="alert-container"></div>
 
-      <form id="add-teacher-form">
-        <!-- School Selector -->
-        <div class="form-group">
-          <label for="school_id">Select School: *</label>
-          <select id="school_id" required>
-              <option value="">-- Choose a School --</option>
-            </select>
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="page">
+
+    <div class="header">
+
+        <h1>Add Your Teacher</h1>
+
+        <p>
+            Can't find your teacher? Add their profile so other students can find them.
+        </p>
+
+    </div>
+
+
+    <section class="form-card">
+
+        <div id="status" class="status"></div>
+
+
+        <form id="addTeacherForm">
+
+            <!-- SCHOOL -->
+
+            <div class="form-group">
+
+                <label for="school">
+                    School <span class="required">*</span>
+                </label>
+
+                <select id="school" required>
+
+                    <option value="">
+                        Loading schools...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- NAME -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="firstName">
+                        Teacher First Name <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        placeholder="e.g. Jeffery"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="lastName">
+                        Teacher Last Name <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lastName"
+                        placeholder="e.g. Gilbert"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- SUBJECT + GRADE -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="department">
+                        Subject / Department <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="department"
+                        placeholder="e.g. Musical Arts"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="gradeLevel">
+                        Grade Level(s) <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="gradeLevel"
+                        placeholder="e.g. 7th and 8th Grade"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BIO -->
+
+            <div class="form-group">
+
+                <label for="bio">
+                    Additional Information
+                </label>
+
+                <textarea
+                    id="bio"
+                    placeholder="Optional information about the teacher..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="submit-button"
+                id="submitButton"
+            >
+                Add Teacher
+            </button>
+
+        </form>
+
+
+        <div class="info-box">
+
+            <strong>Before submitting:</strong>
+
+            Please double-check the teacher's name and school.
+            This helps other students find the correct teacher.
+
         </div>
 
-        <!-- Name Inputs -->
-        <div class="form-row">
-          <div class="form-group">
-            <label for="first_name">Teacher First Name: *</label>
-            <input type="text" id="first_name" placeholder="e.g. Sarah" required>
-          </div>
-          <div class="form-group">
-            <label for="last_name">Teacher Last Name: *</label>
-            <input type="text" id="last_name" placeholder="e.g. Connor" required>
-          </div>
-        </div>
-
-        <!-- Department and Grade -->
-        <div class="form-row">
-          <div class="form-group">
-            <label for="department">Department / Subject: *</label>
-            <input type="text" id="department" placeholder="e.g. Mathematics, Science, English" required>
-          </div>
-          <div class="form-group">
-            <label for="grade_level">Grade Level(s) Taught: *</label>
-            <input type="text" id="grade_level" placeholder="e.g. 7-8 or 9th Grade" required>
-          </div>
-        </div>
-
-        <!-- Bio / Description -->
-        <div class="form-group">
-          <label for="bio">Short Description / Bio (Optional):</label>
-          <textarea 
-            id="bio" 
-            rows="3" 
-            placeholder="e.g. Teaches 8th grade Physical Science and advises the Robotics Club."
-          ></textarea>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="form-actions">
-          <button type="submit" class="btn btn-accent btn-large">✅ Create Teacher Profile</button>
-          <a href="/" class="btn btn-outline btn-large">Cancel</a>
-        </div>
-      </form>
-
-      <!-- Community Guidelines Notice -->
-      <div class="community-notice">
-        <h4>ℹ️ Community Note:</h4>
-        <p>Please double-check spelling before submitting to ensure your teacher profile is easy for classmates to find.</p>
-      </div>
     </section>
-  </main>
 
-  <footer class="footer">
-    <p>Rate My Teacher • Congressional App Challenge • 100% Anonymous & COPPA Compliant</p>
-  </footer>
+</main>
 
 
-  <script>
+<script>
+
+    /* =========================
+       LOAD SCHOOLS
+    ========================= */
+
     async function loadSchools() {
-      const schoolSelect = document.getElementById("school_id");
 
-      try {
-        const response = await fetch("/api/schools");
-        const schools = await response.json();
+        const schoolSelect =
+            document.getElementById("school");
 
-        schools.forEach(function(school) {
-          const option = document.createElement("option");
+        try {
 
-          option.value = school.school_id;
-          option.textContent =
-            school.name +
-            " (" +
-            (school.city || "") +
-            ", " +
-            (school.state || "") +
-            ")";
+            const response =
+                await fetch("/api/schools");
 
-          schoolSelect.appendChild(option);
-        });
-      } catch (error) {
-        console.error("Could not load schools:", error);
-      }
+            if (!response.ok) {
+                throw new Error("Could not load schools.");
+            }
+
+            const result =
+                await response.json();
+
+            const schools =
+                result.schools || result;
+
+            schoolSelect.innerHTML =
+                '<option value="">Select a school</option>';
+
+            schools.forEach(function(school) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value =
+                    school.school_id;
+
+                option.textContent =
+                    school.name;
+
+                schoolSelect.appendChild(option);
+
+            });
+
+        } catch (error) {
+
+            schoolSelect.innerHTML =
+                '<option value="">Could not load schools</option>';
+
+            console.error(error);
+
+        }
+
     }
 
-    document.addEventListener("DOMContentLoaded", loadSchools);
-  </script>
 
-  <script src="/static/app.js" defer></script>
+    /* =========================
+       ADD TEACHER
+    ========================= */
+
+    document
+        .getElementById("addTeacherForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const button =
+                document.getElementById("submitButton");
+
+            const status =
+                document.getElementById("status");
+
+            button.disabled = true;
+
+            button.textContent =
+                "Adding Teacher...";
+
+            status.className =
+                "status";
+
+            status.style.display =
+                "none";
+
+
+            try {
+
+                const teacherData = {
+
+                    school_id:
+                        document
+                            .getElementById("school")
+                            .value,
+
+                    first_name:
+                        document
+                            .getElementById("firstName")
+                            .value
+                            .trim(),
+
+                    last_name:
+                        document
+                            .getElementById("lastName")
+                            .value
+                            .trim(),
+
+                    department:
+                        document
+                            .getElementById("department")
+                            .value
+                            .trim(),
+
+                    grade_level:
+                        document
+                            .getElementById("gradeLevel")
+                            .value
+                            .trim(),
+
+                    bio:
+                        document
+                            .getElementById("bio")
+                            .value
+                            .trim()
+
+                };
+
+
+                /* SEND TO FLASK */
+
+                const response =
+                    await fetch("/api/teachers", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(teacherData)
+
+                    });
+
+
+                const result =
+                    await response.json();
+
+
+                /* ERROR */
+
+                if (!response.ok || !result.success) {
+
+                    throw new Error(
+                        result.error ||
+                        "The teacher could not be added."
+                    );
+
+                }
+
+
+                /* SUCCESS */
+
+                status.className =
+                    "status success";
+
+                status.style.display =
+                    "block";
+
+                status.textContent =
+                    "✓ Teacher added successfully!";
+
+
+                /*
+                    The backend gives us the
+                    new teacher's ID.
+
+                    We use that ID to open
+                    their teacher profile.
+                */
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "/teacher/" +
+                        result.teacher_id;
+
+                }, 800);
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                status.className =
+                    "status error";
+
+                status.style.display =
+                    "block";
+
+                status.textContent =
+                    "✕ " + error.message;
+
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Add Teacher";
+
+            }
+
+        });
+
+
+    /* Load schools when page opens */
+
+    loadSchools();
+
+</script>
+
 </body>
 </html>

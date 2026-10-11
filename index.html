@@ -1716,17 +1716,19 @@
                 const grade =
                     teacher.grade_level ||
                     "";
-
-
+                    
                 const rating =
+                    teacher.rating ??
                     teacher.overall_rating ??
                     teacher.rating_overall;
 
-
                 const reviewCount =
                     teacher.review_count ??
+                    teacher.reviews_count ??
                     teacher.reviews ??
                     0;
+
+
 
 
                 let ratingHTML;
